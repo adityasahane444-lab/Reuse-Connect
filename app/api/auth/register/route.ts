@@ -42,9 +42,13 @@ export async function POST(req: NextRequest) {
     .select()
     .single();
 
-  if (error || !user) {
-    return NextResponse.json({ error: "Could not create account. Please try again." }, { status: 500 });
-  }
+if (error || !user) {
+  console.error("REGISTER ERROR:", error);
+  return NextResponse.json(
+    { error: error?.message || "Could not create account." },
+    { status: 500 }
+  );
+}
 
   await createSession(user.id);
   return NextResponse.json({ user: toPublicUser(user) });
