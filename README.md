@@ -1,54 +1,149 @@
-# Reuse & Connect
+Markdown
+# ♻️ Reuse & Connect — Community Sustainability & Resource Sharing Platform
 
-A community reuse and sustainability platform: share surplus food, give away or find reusable items, organize and join community events, and earn Green Points on a live leaderboard.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-reuse--connect.vercel.app-22c55e?style=for-the-badge&logo=vercel&logoColor=white)](https://reuse-connect.vercel.app/)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/kartik28rathod-max/Reuse-Connect)
+[![Next.js](https://img.shields.io/badge/Next.js%2014-App%20Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Database](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-Built with Next.js (App Router) + React + Tailwind CSS, with Supabase (PostgreSQL) as the database.
+> 🌿 **Empowering local communities to minimize waste, redistribute surplus food, share reusable resources, organize sustainability events, and track eco-impact via gamified Green Points.**
 
-## Local development
+---
 
-```bash
+## 🔗 Quick Links
+
+- 🚀 **Live Demo:** [https://reuse-connect.vercel.app/](https://reuse-connect.vercel.app/)
+- 💻 **GitHub Repo:** [https://github.com/kartik28rathod-max/Reuse-Connect](https://github.com/kartik28rathod-max/Reuse-Connect)
+
+---
+
+## 📌 Overview
+
+**Reuse & Connect** is a collaborative circular-economy web application designed to foster local sustainability. It bridges the gap between surplus resources and community needs by facilitating food donation claims, item reuse exchanges, neighborhood environmental events, and rewarding active contributors through an impact-driven Green Points leaderboard.
+
+---
+
+## ✨ Core Features
+
+- 🍲 **Surplus Food Sharing**: List excess cooked or raw edible food with quantity, expiry window, and pickup coordinates to prevent food waste.
+- 📦 **Resource & Item Reusable Exchange**: Give away or discover pre-loved goods, books, clothes, and electronics instead of sending them to landfills.
+- 📅 **Community Green Events**: Host and RSVP for local tree plantation drives, neighborhood cleanups, and eco-workshops.
+- 🏆 **Gamified Green Points & Leaderboard**: Earn tracked impact points for every donation, reuse claim, or event participation, displayed on a real-time community leaderboard.
+- 🔒 **Secure Role & Session Management**: Server-side authentication and cookie session controls safeguarding user contributions.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+               [ Client Browser / Mobile Web ]
+                             │
+                             ▼ HTTPS
+             [ Next.js 14 App Router on Vercel ]
+              • Server Components & React UI
+              • API Route Handlers (/api/*)
+              • Session & Point Logic (lib/auth.ts)
+                             │
+                             ▼ PostgREST / SQL
+           [ Supabase Cloud Database (PostgreSQL) ]
+              ├── users & sessions
+              ├── food_posts
+              ├── resource_posts
+              ├── events & event_participants
+              └── points_tx (Green Points Audit Log)
+🛠️ Tech Stack
+Framework: Next.js (App Router, Server Components & Route Handlers)
+
+Frontend: React, Tailwind CSS, TypeScript
+
+Database & Auth: Supabase (PostgreSQL engine, RLS policies, SQL helper functions)
+
+Deployment: Vercel (CI/CD integration)
+
+📂 Project Structure
+Plaintext
+Reuse-Connect/
+├── app/                  # Next.js App Router pages and API routes
+│   ├── api/              # Backend endpoints (auth, posts, events, points)
+│   ├── food/             # Food donation and listing views
+│   ├── items/            # Resource exchange marketplace
+│   ├── events/           # Community sustainability events
+│   └── leaderboard/      # Green Points rankings
+├── components/           # Reusable UI components (Navbar, Cards, Modals)
+├── lib/
+│   ├── supabase.ts       # Server-only Supabase client initialization
+│   ├── auth.ts           # Password hashing, sessions, & points awarding
+│   └── types.ts          # Shared TypeScript interfaces & types
+└── supabase/
+    └── schema.sql        # Database schema definitions & SQL functions
+🚀 Getting Started Locally
+Prerequisites
+Node.js (v18 or higher)
+
+npm or yarn
+
+A free Supabase project account
+
+1. Clone & Install
+Bash
+# Clone the repository
+git clone [https://github.com/kartik28rathod-max/Reuse-Connect.git](https://github.com/kartik28rathod-max/Reuse-Connect.git)
+cd Reuse-Connect
+
+# Install dependencies
 npm install
+2. Configure Database (Supabase)
+Open your project on Supabase.
+
+Navigate to SQL Editor -> New query.
+
+Copy the contents of supabase/schema.sql, paste it into the editor, and click Run.
+(This initializes tables: users, sessions, food_posts, resource_posts, events, event_participants, points_tx alongside helper routines).
+
+Navigate to Project Settings -> API and copy:
+
+Project URL
+
+service_role secret key (Server-only access key)
+
+3. Setup Environment Variables
+Create a .env.local file in the project root:
+
+Code snippet
+SUPABASE_URL=[https://your-project-ref.supabase.co](https://your-project-ref.supabase.co)
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-secret-key
+Security Note: SUPABASE_SERVICE_ROLE_KEY has administrative database privileges and is exclusively accessed server-side. Never expose it on the client or commit it to version control.
+
+4. Run Development Server
+Bash
 npm run dev
-```
+Open http://localhost:3000 in your browser.
 
-Open http://localhost:3000.
+🌐 Production Deployment (Vercel)
+Push your latest code to GitHub.
 
-Local dev also needs a Supabase project connected — see below. Without it, the app will error when it tries to read/write data (auth, posts, events, points).
+Import the repository in Vercel.
 
-## Setting up the database (Supabase)
+Under Settings -> Environment Variables, add:
 
-1. Create a free project at https://supabase.com.
-2. In the project dashboard, go to **SQL Editor -> New query**, paste the contents of `supabase/schema.sql`, and click **Run**. This creates all the tables (`users`, `sessions`, `food_posts`, `resource_posts`, `events`, `event_participants`, `points_tx`) and a helper function for awarding points.
-3. Go to **Settings -> API** and copy:
-   - **Project URL**
-   - **service_role** secret key (not the `anon` key)
-4. Copy `.env.local.example` to `.env.local` and paste those two values in:
-   ```
-   SUPABASE_URL=https://xxxxxxxx.supabase.co
-   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-   ```
-5. Restart `npm run dev` if it was already running.
+SUPABASE_URL
 
-The `service_role` key has full database access and is only ever used on the server (API routes and server components) — it's never sent to the browser. Keep it out of git; `.env.local` is already in `.gitignore`.
+SUPABASE_SERVICE_ROLE_KEY
 
-## Deploying so anyone can use it
+Click Deploy. Vercel will build and launch the application globally.
 
-1. Push this project to a GitHub repository.
-2. Go to https://vercel.com, sign in with GitHub, and import the repository.
-3. In the Vercel project's **Settings -> Environment Variables**, add `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` with the same values as your `.env.local`.
-4. Deploy. Vercel gives you a public URL anyone can visit and use.
+🔮 Roadmap & Upcoming Features
+[ ] 🚗 Eco-Carpooling Module: Local commute matching to cut transport emissions.
 
-Because the data lives in Supabase (not on disk), it persists across deploys and works correctly on Vercel's serverless functions.
+[ ] 🏅 Badges & Achievement Unlocks: Digital achievement tokens for milestone contributions.
 
-## Project structure
+[ ] 🛡️ Municipal & NGO Admin Portal: Verified partner portal for large-scale surplus bulk routing.
 
-- `app/` — pages (App Router) and API routes (`app/api/**/route.ts`)
-- `lib/supabase.ts` — server-only Supabase client
-- `lib/auth.ts` — password hashing, session cookies, Green Points awarding
-- `lib/types.ts` — shared TypeScript types
-- `supabase/schema.sql` — database schema to run in Supabase's SQL Editor
-- `components/Navbar.tsx` — shared header with live login state
+👥 Authors & Collaborators
+Aditya Sahane — GitHub Profile • LinkedIn
 
-## Not yet built
+Kartik Rathod — GitHub Profile
 
-Travel-specific carpool/plans, badges & awards, admin dashboard — planned as future phases.
+📄 License
+This project is licensed under the MIT License.
