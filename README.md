@@ -114,3 +114,26 @@
               ├── resource_posts
               ├── events & event_participants
               └── points_tx (Green Points Audit Log)
+
+```
+
+
+## 🔮 Roadmap
+
+```yaml
+Upcoming Milestones:
+  - 🚗 Eco-Carpooling: Commute matching to lower neighborhood vehicle emissions.
+  - 🏅 Achievement Badges: Verifiable sustainability digital collectibles.
+  - 🏢 Bulk Municipal Portal: Dedicated pipeline for bulk NGO food distribution.
+```
+  
+👥 Authors & Collaborators
+
+👨‍💻 Kartik Rathod
+
+👨‍💻 Aditya Sahane
+
+
+*Built for sustainable communities and zero-waste initiatives. 🌍*
+
+              
