@@ -7,6 +7,8 @@ import { useActivity } from "@/lib/useActivity";
 import NotificationBell from "./NotificationBell";
 import UserMenu from "./UserMenu";
 import InstallAppButton from "./InstallAppButton";
+import MobileBottomNav from "./MobileBottomNav";
+import { MessageCircle } from "lucide-react";
 
 const links = [
   { href: "/food", label: "Food" },
@@ -28,69 +30,87 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-20 border-b border-[#E8F5E9] bg-white/95 backdrop-blur">
-      <div className="mx-auto flex min-h-16 w-full max-w-6xl items-center justify-between gap-2 px-3 sm:px-4">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Link
-            href="/"
-            className="flex min-w-0 shrink items-center gap-1.5 text-base font-bold text-[#2E7D32] sm:gap-2 sm:text-lg"
-          >
-            <span aria-hidden="true">🌱</span>
-            <span className="truncate">Reuse &amp; Connect</span>
-          </Link>
-          <InstallAppButton />
+    <>
+      <header className="sticky top-0 z-40 border-b border-[#E5EFE7] bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80">
+        <div className="mx-auto flex min-h-[4rem] w-full max-w-6xl items-center gap-2 px-3 sm:px-4">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <Link
+              href="/"
+              className="group flex min-w-0 shrink items-center gap-2 rounded-xl py-1.5 text-base font-bold tracking-tight text-[#166534] outline-none transition hover:text-[#14532D] focus-visible:ring-2 focus-visible:ring-[#2E7D32] sm:gap-2.5 sm:text-lg"
+              aria-label="Reuse & Connect home"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#E8F5E9] text-lg shadow-sm transition group-hover:scale-105 sm:h-10 sm:w-10">
+                🌱
+              </span>
+              <span className="truncate">Reuse &amp; Connect</span>
+            </Link>
+            <InstallAppButton />
+          </div>
+
+          <nav className="hidden shrink-0 items-center gap-6 text-sm font-medium text-[#1F2937] md:flex">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="transition hover:text-[#2E7D32]"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+            {loading ? (
+              <div className="h-9 w-16 animate-pulse rounded-full bg-gray-100 sm:w-20" />
+            ) : user ? (
+              <>
+                <Link
+                  href="/messages"
+                  aria-label={activity.messages > 0 ? `Messages, ${activity.messages} unread` : "Messages"}
+                  className="relative flex h-10 w-10 items-center justify-center rounded-xl text-[#4B5563] transition hover:bg-[#F1F8F2] hover:text-[#166534]"
+                >
+                  <MessageCircle size={20} strokeWidth={2} />
+                  {activity.messages > 0 && (
+                    <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[9px] font-bold text-white ring-2 ring-white">
+                      {activity.messages > 9 ? "9+" : activity.messages}
+                    </span>
+                  )}
+                </Link>
+                <NotificationBell unread={activity.notifications} />
+                <UserMenu user={user} onLogout={logout} />
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="rounded-xl px-2.5 py-2 text-xs font-semibold text-[#166534] transition hover:bg-[#F1F8F2] sm:px-3 sm:text-sm"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="rounded-xl bg-[#166534] px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[#14532D] sm:px-3.5 sm:text-sm"
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
+          </div>
         </div>
 
-        <nav className="hidden shrink-0 items-center gap-6 text-sm font-medium text-[#1F2937] md:flex">
+        <nav className="hidden w-full items-center gap-1 overflow-x-auto border-t border-[#E8F5E9] px-3 py-1.5 text-sm font-medium text-[#1F2937] sm:px-4 md:hidden">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-[#2E7D32]">
+            <Link
+              key={l.href}
+              href={l.href}
+              className="whitespace-nowrap rounded-lg px-3 py-2 hover:bg-[#F1F8F2] hover:text-[#166534]"
+            >
               {l.label}
             </Link>
           ))}
         </nav>
-
-        <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
-          {loading ? (
-            <div className="h-8 w-12 sm:w-16" />
-          ) : user ? (
-            <>
-              <Link
-                href="/messages"
-                aria-label={activity.messages > 0 ? `Messages, ${activity.messages} unread` : "Messages"}
-                className="relative rounded-full p-1.5 text-lg hover:bg-[#E8F5E9] sm:p-2"
-              >
-                💬
-                {activity.messages > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">
-                    {activity.messages > 9 ? "9+" : activity.messages}
-                  </span>
-                )}
-              </Link>
-              <NotificationBell unread={activity.notifications} />
-              <UserMenu user={user} onLogout={logout} />
-            </>
-          ) : (
-            <>
-              <Link href="/login" className="rounded-full px-2 py-1.5 text-xs font-medium text-[#2E7D32] hover:bg-[#F1F8F2] sm:px-3 sm:text-sm">
-                Login
-              </Link>
-              <Link
-                href="/register"
-                className="rounded-full bg-[#2E7D32] px-2.5 py-1.5 text-xs font-medium text-white hover:bg-[#256428] sm:px-3 sm:text-sm"
-              >
-                Sign up
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
-      <nav className="flex w-full items-center gap-5 overflow-x-auto border-t border-[#E8F5E9] px-3 py-2 text-sm font-medium text-[#1F2937] sm:px-4 md:hidden">
-        {links.map((l) => (
-          <Link key={l.href} href={l.href} className="whitespace-nowrap py-0.5 hover:text-[#2E7D32]">
-            {l.label}
-          </Link>
-        ))}
-      </nav>
-    </header>
+      </header>
+      <MobileBottomNav />
+    </>
   );
 }

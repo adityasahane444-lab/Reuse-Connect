@@ -126,7 +126,7 @@ function MessagesPageInner() {
 
   return (
     <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-8">
-      <div className="mx-auto flex h-[calc(100dvh-7.25rem)] min-h-[30rem] max-w-4xl overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white sm:h-[calc(100vh-8rem)]">
+      <div className="mx-auto flex h-[calc(100dvh-8.75rem)] min-h-[24rem] max-w-4xl overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white sm:h-[calc(100vh-8rem)] sm:min-h-[30rem]">
         <aside className={`w-full shrink-0 overflow-y-auto border-r border-[#E8F5E9] sm:w-72 ${activeId ? "hidden sm:block" : ""}`}>
           <h1 className="border-b border-[#E8F5E9] px-4 py-3 text-lg font-bold text-[#1F2937]">Messages</h1>
           {conversations === null ? (

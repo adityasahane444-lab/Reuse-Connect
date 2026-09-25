@@ -14,7 +14,7 @@ interface Props {
 
 export default function SearchFilters({ query, onQuery, placeholder, categories, active, onActive, highlight = [], label }: Props) {
   const chip = (selected: boolean) =>
-    `rounded-full px-4 py-1.5 text-sm font-medium ${
+    `shrink-0 rounded-full px-4 py-2 text-sm font-medium ${
       selected ? "bg-[#2E7D32] text-white" : "bg-white border border-gray-200 text-[#1F2937] hover:border-[#2E7D32]"
     }`;
 
@@ -36,7 +36,7 @@ export default function SearchFilters({ query, onQuery, placeholder, categories,
           className="w-full rounded-xl border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
       </div>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+      <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible" role="group" aria-label="Filter by category">
         <button onClick={() => onActive(null)} aria-pressed={active === null} className={chip(active === null)}>
           All
         </button>
