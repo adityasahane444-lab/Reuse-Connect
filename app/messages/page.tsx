@@ -121,12 +121,12 @@ function MessagesPageInner() {
     loadConversations();
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-10" />;
+  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in to see your messages." />;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-8">
-      <div className="mx-auto flex h-[calc(100vh-8rem)] max-w-4xl overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-8">
+      <div className="mx-auto flex h-[calc(100dvh-7.25rem)] min-h-[30rem] max-w-4xl overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white sm:h-[calc(100vh-8rem)]">
         <aside className={`w-full shrink-0 overflow-y-auto border-r border-[#E8F5E9] sm:w-72 ${activeId ? "hidden sm:block" : ""}`}>
           <h1 className="border-b border-[#E8F5E9] px-4 py-3 text-lg font-bold text-[#1F2937]">Messages</h1>
           {conversations === null ? (
@@ -204,7 +204,7 @@ function MessagesPageInner() {
                   e.preventDefault();
                   send();
                 }}
-                className="flex gap-2 border-t border-[#E8F5E9] p-3"
+                className="flex gap-2 border-t border-[#E8F5E9] p-2.5 sm:p-3"
               >
                 <label htmlFor="message-input" className="sr-only">Message</label>
                 <input
@@ -218,7 +218,7 @@ function MessagesPageInner() {
                 <button
                   type="submit"
                   disabled={sending || !draft.trim()}
-                  className="rounded-full bg-[#2E7D32] px-5 py-2 text-sm font-semibold text-white hover:bg-[#256428] disabled:opacity-60"
+                  className="shrink-0 rounded-full bg-[#2E7D32] px-4 py-2 text-sm font-semibold text-white hover:bg-[#256428] disabled:opacity-60 sm:px-5"
                 >
                   Send
                 </button>
@@ -233,7 +233,7 @@ function MessagesPageInner() {
 
 export default function MessagesPage() {
   return (
-    <Suspense fallback={<main className="flex-1 bg-[#F7FAF7] px-4 py-10" />}>
+    <Suspense fallback={<main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />}>
       <MessagesPageInner />
     </Suspense>
   );

@@ -33,7 +33,7 @@ export default function UserMenu({ user, onLogout }: Props) {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-30 mt-2 w-56 overflow-hidden rounded-xl border border-[#E8F5E9] bg-white py-1 shadow-lg">
+        <div className="absolute right-0 z-30 mt-2 w-56 max-w-[calc(100vw-1rem)] overflow-hidden rounded-xl border border-[#E8F5E9] bg-white py-1 shadow-lg">
           <div className="border-b border-[#E8F5E9] px-4 py-2.5">
             <p className="truncate text-sm font-semibold text-[#1F2937]">{user.name}</p>
             <p className="truncate text-xs text-[#6B7280]">{user.email}</p>

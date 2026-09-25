@@ -35,7 +35,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+      <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
         <p className="mx-auto max-w-4xl text-[#6B7280]">Loading dashboard...</p>
       </main>
     );
@@ -43,7 +43,7 @@ export default function DashboardPage() {
 
   if (notLoggedIn || !data) {
     return (
-      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-16">
+      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-10 sm:py-16">
         <div className="rounded-2xl border border-[#E8F5E9] bg-white p-10 text-center">
           <p className="text-[#1F2937]">Please log in to view your dashboard.</p>
           <button
@@ -60,9 +60,9 @@ export default function DashboardPage() {
   const { user, rank, foodPosts, resourcePosts, organizedEvents, joinedEvents, pointsHistory } = data;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-4xl">
-        <div className="flex flex-col gap-4 rounded-2xl border border-[#E8F5E9] bg-white p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-[#1F2937]">👤 {user.name}</h1>
             <p className="text-sm text-[#6B7280]">
@@ -116,7 +116,7 @@ export default function DashboardPage() {
             ) : (
               <ul className="divide-y divide-[#E8F5E9]">
                 {pointsHistory.map((tx) => (
-                  <li key={tx.id} className="flex items-center justify-between px-5 py-3 text-sm">
+                  <li key={tx.id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 text-sm">
                     <span className="text-[#1F2937]">{tx.reason}</span>
                     <span className="font-bold text-[#2E7D32]">+{tx.amount}</span>
                   </li>
@@ -152,8 +152,8 @@ function Section({
 }) {
   const hasChildren = Array.isArray(children) ? children.length > 0 : Boolean(children);
   return (
-    <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5">
-      <div className="flex items-center justify-between">
+    <div className="rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="font-bold text-[#1F2937]">{title}</h3>
         <Link href={href} className="text-sm font-medium text-[#2E7D32]">
           + Add
@@ -168,7 +168,7 @@ function Section({
 
 function ListRow({ title, date, extra }: { title: string; date: string; extra?: string }) {
   return (
-    <div className="flex items-center justify-between text-sm">
+    <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
       <span className="text-[#1F2937]">{title}</span>
       <span className="text-[#6B7280]">{extra ?? new Date(date).toLocaleDateString()}</span>
     </div>

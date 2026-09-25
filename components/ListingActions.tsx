@@ -129,7 +129,7 @@ export default function ListingActions({
             onClick={() => setMode(mode === "report" ? "none" : "report")}
             aria-label="Report this post"
             title="Report this post"
-            className="ml-auto rounded-lg px-2 py-1.5 text-sm text-[#6B7280] hover:bg-gray-100"
+            className="rounded-lg px-2 py-1.5 text-sm text-[#6B7280] hover:bg-gray-100 sm:ml-auto"
           >
             🚩
           </button>

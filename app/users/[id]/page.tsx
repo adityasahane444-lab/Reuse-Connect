@@ -27,7 +27,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
 
   if (id === user?.id) {
     return (
-      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-16">
+      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-10 sm:py-16">
         <p className="text-[#1F2937]">
           That&apos;s you!{" "}
           <Link href="/profile" className="text-[#2E7D32] underline">
@@ -41,27 +41,27 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
 
   if (data === "not_found") {
     return (
-      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-16">
+      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-10 sm:py-16">
         <p className="text-[#6B7280]">This user couldn&apos;t be found.</p>
       </main>
     );
   }
-  if (data === null) return <main className="flex-1 bg-[#F7FAF7] px-4 py-10" />;
+  if (data === null) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
 
   const { profile, stats, reviews } = data;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-2xl space-y-6">
-        <div className="rounded-2xl border border-[#E8F5E9] bg-white p-6">
-          <div className="flex flex-wrap items-center gap-4">
+        <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center">
             <Avatar name={profile.name} url={profile.avatarUrl} size={72} />
             <div className="min-w-0 flex-1">
               <h1 className="text-2xl font-bold text-[#1F2937]">{profile.name}</h1>
               <p className="text-sm capitalize text-[#6B7280]">{profile.role}</p>
               <div className="mt-1"><RatingBadge {...stats.rating} /></div>
             </div>
-            <div className="ml-auto grid grid-cols-2 gap-4 text-center">
+            <div className="grid w-full grid-cols-2 gap-2 text-center sm:ml-auto sm:w-auto sm:gap-4">
               <div>
                 <p className="text-xl font-bold text-[#2E7D32]">{profile.greenPoints}</p>
                 <p className="text-xs text-[#6B7280]">Green Points</p>
@@ -85,13 +85,13 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
         </div>
 
         {reviews.length > 0 && (
-          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-6">
+          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6">
             <h2 className="text-lg font-bold text-[#1F2937]">Reviews</h2>
             <div className="mt-3 space-y-3">
               {reviews.map((r) => (
                 <div key={r.id} className="flex gap-3 border-b border-gray-50 pb-3 last:border-b-0 last:pb-0">
                   <Avatar name={r.from.name} url={r.from.avatarUrl} size={32} />
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-sm font-medium text-[#1F2937]">
                       {r.from.name} <Stars value={r.score} />
                     </p>

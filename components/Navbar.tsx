@@ -6,6 +6,7 @@ import { useUser } from "@/lib/useUser";
 import { useActivity } from "@/lib/useActivity";
 import NotificationBell from "./NotificationBell";
 import UserMenu from "./UserMenu";
+import InstallAppButton from "./InstallAppButton";
 
 const links = [
   { href: "/food", label: "Food" },
@@ -28,12 +29,19 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-[#E8F5E9] bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-[#2E7D32]">
-          🌱 Reuse &amp; Connect
-        </Link>
+      <div className="mx-auto flex min-h-16 w-full max-w-6xl items-center justify-between gap-2 px-3 sm:px-4">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <Link
+            href="/"
+            className="flex min-w-0 shrink items-center gap-1.5 text-base font-bold text-[#2E7D32] sm:gap-2 sm:text-lg"
+          >
+            <span aria-hidden="true">🌱</span>
+            <span className="truncate">Reuse &amp; Connect</span>
+          </Link>
+          <InstallAppButton />
+        </div>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium text-[#1F2937] md:flex">
+        <nav className="hidden shrink-0 items-center gap-6 text-sm font-medium text-[#1F2937] md:flex">
           {links.map((l) => (
             <Link key={l.href} href={l.href} className="hover:text-[#2E7D32]">
               {l.label}
@@ -41,15 +49,15 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
           {loading ? (
-            <div className="h-8 w-16" />
+            <div className="h-8 w-12 sm:w-16" />
           ) : user ? (
             <>
               <Link
                 href="/messages"
                 aria-label={activity.messages > 0 ? `Messages, ${activity.messages} unread` : "Messages"}
-                className="relative rounded-full p-2 text-lg hover:bg-[#E8F5E9]"
+                className="relative rounded-full p-1.5 text-lg hover:bg-[#E8F5E9] sm:p-2"
               >
                 💬
                 {activity.messages > 0 && (
@@ -63,12 +71,12 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-sm font-medium text-[#2E7D32]">
+              <Link href="/login" className="rounded-full px-2 py-1.5 text-xs font-medium text-[#2E7D32] hover:bg-[#F1F8F2] sm:px-3 sm:text-sm">
                 Login
               </Link>
               <Link
                 href="/register"
-                className="rounded-md bg-[#2E7D32] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#256428]"
+                className="rounded-full bg-[#2E7D32] px-2.5 py-1.5 text-xs font-medium text-white hover:bg-[#256428] sm:px-3 sm:text-sm"
               >
                 Sign up
               </Link>
@@ -76,9 +84,9 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      <nav className="flex items-center gap-4 overflow-x-auto border-t border-[#E8F5E9] px-4 py-2 text-sm font-medium text-[#1F2937] md:hidden">
+      <nav className="flex w-full items-center gap-5 overflow-x-auto border-t border-[#E8F5E9] px-3 py-2 text-sm font-medium text-[#1F2937] sm:px-4 md:hidden">
         {links.map((l) => (
-          <Link key={l.href} href={l.href} className="whitespace-nowrap hover:text-[#2E7D32]">
+          <Link key={l.href} href={l.href} className="whitespace-nowrap py-0.5 hover:text-[#2E7D32]">
             {l.label}
           </Link>
         ))}

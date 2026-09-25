@@ -33,18 +33,18 @@ export default function NotificationsPage() {
     pingActivity();
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-10" />;
+  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in to see your notifications." />;
 
   const unread = items?.filter((n) => !n.read).length ?? 0;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-2xl">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-[#1F2937]">Notifications</h1>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">Notifications</h1>
           {unread > 0 && (
-            <button onClick={() => markRead("all")} className="rounded-md border border-[#2E7D32] px-3 py-1.5 text-sm text-[#2E7D32] hover:bg-[#E8F5E9]">
+            <button onClick={() => markRead("all")} className="w-full rounded-md border border-[#2E7D32] px-3 py-1.5 text-sm text-[#2E7D32] hover:bg-[#E8F5E9] sm:w-auto">
               Mark all as read
             </button>
           )}
@@ -65,7 +65,7 @@ export default function NotificationsPage() {
                   if (!n.read) markRead([n.id]);
                   if (n.link) router.push(n.link);
                 }}
-                className={`flex w-full gap-3 border-b border-gray-100 px-5 py-4 text-left last:border-b-0 hover:bg-gray-50 ${n.read ? "" : "bg-[#F1F8F2]"}`}
+                className={`flex w-full gap-3 border-b border-gray-100 px-4 py-4 text-left sm:px-5 last:border-b-0 hover:bg-gray-50 ${n.read ? "" : "bg-[#F1F8F2]"}`}
               >
                 <span className="text-xl" aria-hidden="true">{NOTIFICATION_ICONS[n.type] ?? "🔔"}</span>
                 <span className="min-w-0 flex-1">

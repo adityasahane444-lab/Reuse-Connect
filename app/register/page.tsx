@@ -61,13 +61,13 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center bg-green-50 px-6 py-16">
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
+    <main className="flex flex-1 items-center justify-center bg-green-50 px-4 py-8 sm:px-6 sm:py-16">
+      <div className="w-full max-w-md rounded-3xl bg-white p-5 shadow-xl sm:p-8">
         <div className="text-center">
           <Link href="/" className="text-2xl font-bold text-green-700">
             🌱 Reuse & Connect
           </Link>
-          <h1 className="mt-8 text-3xl font-bold text-gray-900">Join Reuse & Connect</h1>
+          <h1 className="mt-8 text-2xl font-bold sm:text-3xl text-gray-900">Join Reuse & Connect</h1>
           <p className="mt-2 text-gray-600">Create an account and start earning Green Points.</p>
         </div>
 
@@ -78,7 +78,7 @@ export default function RegisterPage() {
         <form onSubmit={onSubmit} className="mt-8 space-y-5">
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">I am a</label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {roles.map((r) => (
                 <label
                   key={r.value}

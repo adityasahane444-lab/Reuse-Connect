@@ -112,23 +112,23 @@ export default function AdminPage() {
     if (res.ok) await loadUsers(userQuery);
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-10" />;
+  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in." />;
   if (!user.isAdmin) {
     return (
-      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-16">
+      <main className="flex flex-1 items-center justify-center bg-[#F7FAF7] px-4 py-10 sm:py-16">
         <p className="text-[#6B7280]">This page is for moderators only.</p>
       </main>
     );
   }
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-4xl">
-        <h1 className="text-3xl font-bold text-[#1F2937]">Admin dashboard</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">Admin dashboard</h1>
 
         {stats && (
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
             <StatCard label="Users" value={stats.users} />
             <StatCard label="Food posts" value={stats.foodPosts} />
             <StatCard label="Resource posts" value={stats.resourcePosts} />
@@ -140,14 +140,14 @@ export default function AdminPage() {
           </div>
         )}
 
-        <div className="mt-6 inline-flex overflow-hidden rounded-lg border border-gray-200 bg-white text-sm" role="tablist">
+        <div className="mt-6 flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-sm sm:inline-flex sm:w-auto" role="tablist">
           {(["reports", "users"] as const).map((t) => (
             <button
               key={t}
               role="tab"
               aria-selected={tab === t}
               onClick={() => setTab(t)}
-              className={`px-5 py-2 font-medium ${tab === t ? "bg-[#2E7D32] text-white" : "text-[#1F2937] hover:bg-gray-50"}`}
+              className={`min-w-0 flex-1 px-3 py-2 text-xs font-medium sm:flex-none sm:px-5 sm:text-sm ${tab === t ? "bg-[#2E7D32] text-white" : "text-[#1F2937] hover:bg-gray-50"}`}
             >
               {t === "reports" ? `Flagged posts${stats ? ` (${stats.openReports})` : ""}` : "Users"}
             </button>
@@ -161,12 +161,12 @@ export default function AdminPage() {
             {reports === null ? (
               <p className="text-[#6B7280]">Loading…</p>
             ) : reports.length === 0 ? (
-              <p className="rounded-2xl border border-[#E8F5E9] bg-white p-8 text-center text-[#6B7280]">No open reports. 🎉</p>
+              <p className="rounded-2xl border border-[#E8F5E9] bg-white p-5 text-center sm:p-8 text-[#6B7280]">No open reports. 🎉</p>
             ) : (
               reports.map((r) => {
                 const busy = busyId === r.id;
                 return (
-                  <div key={r.id} className="rounded-2xl border border-[#E8F5E9] bg-white p-5">
+                  <div key={r.id} className="rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5">
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div>
                         <p className="font-semibold text-[#1F2937]">
@@ -221,7 +221,7 @@ export default function AdminPage() {
                 <p className="p-6 text-[#6B7280]">No users found.</p>
               ) : (
                 users.map((u) => (
-                  <div key={u.id} className="flex items-center justify-between gap-2 border-b border-gray-50 px-4 py-3 last:border-b-0">
+                  <div key={u.id} className="flex flex-col gap-3 border-b border-gray-50 px-4 py-3 last:border-b-0 sm:flex-row sm:items-center sm:justify-between">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium text-[#1F2937]">
                         {u.name} {u.isAdmin && <span className="text-xs text-[#2E7D32]">· admin</span>} {u.isBanned && <span className="text-xs text-red-600">· suspended</span>}
@@ -232,7 +232,7 @@ export default function AdminPage() {
                       <button
                         disabled={busyId === u.id}
                         onClick={() => toggleBan(u)}
-                        className={`shrink-0 rounded-md border px-3 py-1.5 text-xs font-semibold disabled:opacity-60 ${
+                        className={`self-start rounded-md border px-3 py-1.5 text-xs font-semibold disabled:opacity-60 sm:self-auto ${
                           u.isBanned ? "border-[#2E7D32] text-[#2E7D32] hover:bg-[#E8F5E9]" : "border-red-300 text-red-700 hover:bg-red-50"
                         }`}
                       >

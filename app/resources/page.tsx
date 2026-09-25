@@ -111,18 +111,18 @@ export default function ResourcesPage() {
     }`;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-[#1F2937]">Resource Reuse</h1>
+            <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">Resource Reuse</h1>
             <p className="mt-1 text-[#6B7280]">
               Give, exchange, or find reusable items — from travel gear to SPPU question banks and lab kits.
             </p>
           </div>
           <button
             onClick={() => setShowForm((s) => !s)}
-            className="rounded-xl bg-[#2E7D32] px-5 py-3 font-semibold text-white hover:bg-[#256428]"
+            className="w-full rounded-xl bg-[#2E7D32] px-5 py-3 font-semibold text-white hover:bg-[#256428] sm:w-auto"
           >
             + Post Item
           </button>
@@ -135,7 +135,7 @@ export default function ResourcesPage() {
         )}
 
         {showForm && (
-          <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-2xl border border-[#E8F5E9] bg-white p-6">
+          <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-6">
             {error && <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
             <div>
               <label htmlFor="res-title" className="mb-1 block text-sm font-medium text-[#1F2937]">Title</label>
@@ -179,7 +179,7 @@ export default function ResourcesPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="rounded-xl bg-[#2E7D32] px-6 py-2.5 font-semibold text-white hover:bg-[#256428] disabled:opacity-60"
+              className="w-full rounded-xl bg-[#2E7D32] px-6 py-2.5 font-semibold text-white hover:bg-[#256428] disabled:opacity-60 sm:w-auto"
             >
               {submitting ? "Posting..." : "Post Item (+30 pts)"}
             </button>
@@ -215,7 +215,7 @@ export default function ResourcesPage() {
             </p>
           ) : (
             posts.map((p) => (
-              <div key={p.id} className={`rounded-2xl border border-[#E8F5E9] bg-white p-5 ${loading ? "opacity-60" : ""}`}>
+              <div key={p.id} className={`rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5 ${loading ? "opacity-60" : ""}`}>
                 <div className="flex h-24 items-center justify-center rounded-lg bg-[#E8F5E9] text-4xl">
                   {isAcademic(p.category) ? "🎓" : "📦"}
                 </div>

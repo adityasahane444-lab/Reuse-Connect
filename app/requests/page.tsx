@@ -84,7 +84,7 @@ export default function RequestsPage() {
     await load();
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-10" />;
+  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in to manage your exchanges." />;
 
   const list = data?.[tab] ?? [];
@@ -93,19 +93,19 @@ export default function RequestsPage() {
   const btn = "rounded-md px-3 py-1.5 text-sm font-semibold disabled:opacity-60";
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-3xl">
-        <h1 className="text-3xl font-bold text-[#1F2937]">My exchanges</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">My exchanges</h1>
         <p className="mt-1 text-[#6B7280]">Requests for your listings, and requests you&apos;ve made.</p>
 
-        <div className="mt-6 inline-flex overflow-hidden rounded-lg border border-gray-200 bg-white text-sm" role="tablist">
+        <div className="mt-6 flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-sm sm:inline-flex sm:w-auto" role="tablist">
           {(["incoming", "outgoing"] as const).map((t) => (
             <button
               key={t}
               role="tab"
               aria-selected={tab === t}
               onClick={() => setTab(t)}
-              className={`px-5 py-2 font-medium ${tab === t ? "bg-[#2E7D32] text-white" : "text-[#1F2937] hover:bg-gray-50"}`}
+              className={`min-w-0 flex-1 px-3 py-2 text-xs font-medium sm:flex-none sm:px-5 sm:text-sm ${tab === t ? "bg-[#2E7D32] text-white" : "text-[#1F2937] hover:bg-gray-50"}`}
             >
               {t === "incoming" ? `Requests for my items${pendingIncoming ? ` (${pendingIncoming})` : ""}` : "My requests"}
             </button>
@@ -118,7 +118,7 @@ export default function RequestsPage() {
           {data === null ? (
             <p className="text-[#6B7280]">Loading…</p>
           ) : list.length === 0 ? (
-            <p className="rounded-2xl border border-[#E8F5E9] bg-white p-8 text-center text-[#6B7280]">
+            <p className="rounded-2xl border border-[#E8F5E9] bg-white p-5 text-center sm:p-8 text-[#6B7280]">
               {tab === "incoming" ? (
                 <>No one has requested your items yet.</>
               ) : (
@@ -135,7 +135,7 @@ export default function RequestsPage() {
               const busy = busyId === r.id;
               const draft = rating[r.id] ?? { score: 0, comment: "" };
               return (
-                <div key={r.id} className="rounded-2xl border border-[#E8F5E9] bg-white p-5">
+                <div key={r.id} className="rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5">
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div className="flex items-center gap-3">
                       <Avatar name={r.other.name} url={r.other.avatarUrl} size={40} />

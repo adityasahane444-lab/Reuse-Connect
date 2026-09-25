@@ -17,3 +17,8 @@ The `/install` page also explains the installation steps and provides the browse
 
 ## Native Android APK / Play Store
 The web app can later be wrapped with Capacitor for an APK/AAB and store distribution. This does not require rewriting the existing Next.js, Supabase, authentication, or Mailjet logic.
+
+
+### Header install button
+
+The site header includes an Install App button beside the Reuse & Connect name. When the browser exposes the native install prompt it opens it directly; otherwise it opens `/install` with browser-specific instructions.

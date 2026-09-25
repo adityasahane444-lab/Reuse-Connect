@@ -68,13 +68,13 @@ export default async function Home() {
     <main className="min-h-screen bg-[#f6fbf7] text-gray-900">
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 pb-20 pt-20 lg:pb-28 lg:pt-28">
+        <div className="mx-auto max-w-7xl px-4 pb-14 pt-12 sm:px-6 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+            <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full bg-green-100 px-3 py-2 text-xs font-semibold text-green-700 sm:px-4 sm:text-sm">
               🌍 Together for a sustainable future
             </div>
 
-            <h1 className="text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-6xl">
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
               Reuse More.
               <span className="block text-green-600">Waste Less.</span>
             </h1>
@@ -85,16 +85,16 @@ export default async function Home() {
             </p>
 
             {/* Search */}
-            <div className="mx-auto mt-9 flex max-w-2xl items-center rounded-2xl border border-gray-200 bg-white p-2 shadow-lg">
-              <span className="px-4 text-xl">🔍</span>
+            <div className="mx-auto mt-7 flex max-w-2xl flex-col gap-2 rounded-2xl border border-gray-200 bg-white p-2 shadow-lg sm:mt-9 sm:flex-row sm:items-center">
+              <span className="px-3 text-xl sm:px-4">🔍</span>
 
               <input
                 type="text"
                 placeholder="Search food, items, travel gear or events..."
-                className="flex-1 bg-transparent px-2 py-3 text-sm outline-none placeholder:text-gray-400"
+                className="min-w-0 flex-1 bg-transparent px-2 py-3 text-sm outline-none placeholder:text-gray-400"
               />
 
-              <button className="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700">
+              <button className="w-full rounded-xl bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 sm:w-auto">
                 Search
               </button>
             </div>
@@ -102,14 +102,14 @@ export default async function Home() {
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/resources"
-                className="rounded-xl bg-green-600 px-7 py-3.5 font-semibold text-white shadow-md hover:bg-green-700"
+                className="w-full rounded-xl bg-green-600 px-7 py-3.5 font-semibold text-white shadow-md hover:bg-green-700 sm:w-auto"
               >
                 Explore Reuse
               </Link>
 
               <Link
                 href="/resources"
-                className="rounded-xl border border-green-200 bg-white px-7 py-3.5 font-semibold text-green-700 hover:bg-green-50"
+                className="w-full rounded-xl border border-green-200 bg-white px-7 py-3.5 font-semibold text-green-700 hover:bg-green-50 sm:w-auto"
               >
                 + Create a Post
               </Link>
@@ -123,11 +123,11 @@ export default async function Home() {
       </section>
 
       {/* Categories */}
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-white py-14 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mb-10 text-center">
             <p className="font-semibold text-green-600">EXPLORE</p>
-            <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+            <h2 className="mt-2 text-2xl font-bold sm:text-3xl md:text-4xl">
               Find ways to reuse
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-gray-500">
@@ -141,7 +141,7 @@ export default async function Home() {
               <Link
                 key={category.title}
                 href={category.href}
-                className="group rounded-3xl border border-gray-100 bg-[#f8fcf9] p-7 transition hover:-translate-y-1 hover:border-green-200 hover:shadow-xl"
+                className="group rounded-3xl border border-gray-100 bg-[#f8fcf9] p-5 transition hover:-translate-y-1 sm:p-7 hover:border-green-200 hover:shadow-xl"
               >
                 <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100 text-3xl">
                   {category.icon}
@@ -165,17 +165,17 @@ export default async function Home() {
       </section>
 
       {/* How it works */}
-      <section className="bg-[#f6fbf7] py-20">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="bg-[#f6fbf7] py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="text-center">
             <p className="font-semibold text-green-600">HOW IT WORKS</p>
-            <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+            <h2 className="mt-2 text-2xl font-bold sm:text-3xl md:text-4xl">
               Small actions. Big impact.
             </h2>
           </div>
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
-            <div className="rounded-3xl bg-white p-8 text-center shadow-sm">
+            <div className="rounded-3xl bg-white p-5 text-center sm:p-8 shadow-sm">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
                 📦
               </div>
@@ -186,7 +186,7 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="rounded-3xl bg-white p-8 text-center shadow-sm">
+            <div className="rounded-3xl bg-white p-5 text-center sm:p-8 shadow-sm">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
                 🤝
               </div>
@@ -197,7 +197,7 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="rounded-3xl bg-white p-8 text-center shadow-sm">
+            <div className="rounded-3xl bg-white p-5 text-center sm:p-8 shadow-sm">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
                 🏆
               </div>
@@ -212,12 +212,12 @@ export default async function Home() {
       </section>
 
       {/* Community Events */}
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-white py-14 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
               <p className="font-semibold text-green-600">COMMUNITY</p>
-              <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+              <h2 className="mt-2 text-2xl font-bold sm:text-3xl md:text-4xl">
                 Make an impact together
               </h2>
               <p className="mt-3 text-gray-500">
@@ -241,7 +241,7 @@ export default async function Home() {
               </Link>
             </div>
           ) : (
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2 md:grid-cols-3">
               {upcomingEvents.map((event) => (
                 <Link
                   key={event.id}
@@ -252,7 +252,7 @@ export default async function Home() {
                     🌳
                   </div>
 
-                  <div className="p-6">
+                  <div className="p-5 sm:p-6">
                     <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">
                       {event.category}
                     </span>
@@ -267,7 +267,7 @@ export default async function Home() {
                       📅 {event.date} {event.time}
                     </p>
 
-                    <div className="mt-5 flex items-center justify-between">
+                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
                       <span className="text-sm font-medium text-gray-500">
                         👥 {event.participantCount} joined
                       </span>
@@ -285,8 +285,8 @@ export default async function Home() {
       </section>
 
       {/* Rewards */}
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-green-700 px-8 py-14 text-center text-white shadow-xl md:px-16">
+      <section className="px-4 py-12 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-green-700 px-5 py-10 text-center text-white shadow-xl sm:px-8 sm:py-14 md:px-16">
           <div className="text-5xl">🏆</div>
 
           <h2 className="mt-5 text-3xl font-extrabold md:text-4xl">
@@ -314,7 +314,7 @@ export default async function Home() {
 
       {/* Footer */}
       <footer className="border-t border-green-100 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-8 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="font-bold text-green-700">🌱 Reuse & Connect</div>
             <p className="mt-1 text-sm text-gray-500">

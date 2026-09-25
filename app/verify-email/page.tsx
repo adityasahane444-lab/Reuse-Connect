@@ -32,8 +32,8 @@ export default function VerifyEmailPage() {
     setMessage("A new verification code has been sent.");
   }
 
-  return <main className="flex flex-1 items-center justify-center bg-green-50 px-6 py-16"><div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
-    <div className="text-center"><Link href="/" className="text-2xl font-bold text-green-700">🌱 Reuse &amp; Connect</Link><h1 className="mt-8 text-3xl font-bold text-gray-900">Verify your email</h1><p className="mt-2 text-gray-600">Enter the 6-digit code sent to your email.</p></div>
+  return <main className="flex flex-1 items-center justify-center bg-green-50 px-4 py-10 sm:px-6 sm:py-16"><div className="w-full max-w-md rounded-3xl bg-white p-5 shadow-xl sm:p-8">
+    <div className="text-center"><Link href="/" className="text-2xl font-bold text-green-700">🌱 Reuse &amp; Connect</Link><h1 className="mt-8 text-2xl font-bold sm:text-3xl text-gray-900">Verify your email</h1><p className="mt-2 text-gray-600">Enter the 6-digit code sent to your email.</p></div>
     {error && <p className="mt-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
     {message && <p className="mt-6 rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700">{message}</p>}
     <form onSubmit={verify} className="mt-8 space-y-5">

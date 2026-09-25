@@ -86,17 +86,17 @@ export default function ProfilePage() {
     await refresh();
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-10" />;
+  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in to view your profile." />;
 
   const inputClass =
     "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E7D32]";
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-3xl space-y-6">
-        <div className="rounded-2xl border border-[#E8F5E9] bg-white p-6">
-          <div className="flex flex-wrap items-center gap-4">
+        <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center">
             <div className="flex flex-col items-center gap-2">
               <Avatar name={user.name} url={user.avatarUrl} size={72} />
               <div className="flex gap-2 text-xs">
@@ -121,7 +121,7 @@ export default function ProfilePage() {
               <p className="mt-1 text-sm capitalize text-[#6B7280]">{user.role}</p>
               {data && <div className="mt-1"><RatingBadge {...data.stats.rating} /></div>}
             </div>
-            <div className="ml-auto grid grid-cols-3 gap-4 text-center">
+            <div className="grid w-full grid-cols-3 gap-2 text-center sm:ml-auto sm:w-auto sm:gap-4">
               <div>
                 <p className="text-xl font-bold text-[#2E7D32]">{user.greenPoints}</p>
                 <p className="text-xs text-[#6B7280]">Green Points</p>
@@ -165,13 +165,13 @@ export default function ProfilePage() {
         </div>
 
         {data && data.reviews.length > 0 && (
-          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-6">
+          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6">
             <h2 className="text-lg font-bold text-[#1F2937]">Reviews</h2>
             <div className="mt-3 space-y-3">
               {data.reviews.map((r) => (
                 <div key={r.id} className="flex gap-3 border-b border-gray-50 pb-3 last:border-b-0 last:pb-0">
                   <Avatar name={r.from.name} url={r.from.avatarUrl} size={32} />
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-sm font-medium text-[#1F2937]">
                       {r.from.name} <Stars value={r.score} />
                     </p>
@@ -185,11 +185,11 @@ export default function ProfilePage() {
         )}
 
         {data && data.exchanges.length > 0 && (
-          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-6">
+          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6">
             <h2 className="text-lg font-bold text-[#1F2937]">Exchange history</h2>
             <ul className="mt-3 divide-y divide-gray-50">
               {data.exchanges.map((e) => (
-                <li key={e.id} className="flex items-center justify-between py-2 text-sm">
+                <li key={e.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
                   <span className="text-[#1F2937]">
                     {e.itemType === "food" ? "🍛" : "📦"} {e.itemTitle} <span className="text-[#6B7280]">· you {e.role === "giver" ? "gave" : "received"}</span>
                   </span>
@@ -202,11 +202,11 @@ export default function ProfilePage() {
         )}
 
         {data && data.pointsHistory.length > 0 && (
-          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-6">
+          <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6">
             <h2 className="text-lg font-bold text-[#1F2937]">Recent Green Points</h2>
             <ul className="mt-3 divide-y divide-gray-50">
               {data.pointsHistory.map((p) => (
-                <li key={p.id} className="flex items-center justify-between py-2 text-sm">
+                <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
                   <span className="text-[#1F2937]">{p.reason}</span>
                   <span className="flex items-center gap-2">
                     <span className="font-semibold text-[#2E7D32]">+{p.amount}</span>

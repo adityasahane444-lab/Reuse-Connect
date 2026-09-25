@@ -135,16 +135,16 @@ export default function EventsPage() {
     "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E7D32]";
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-10">
+    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-[#1F2937]">Community Events</h1>
+            <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">Community Events</h1>
             <p className="mt-1 text-[#6B7280]">Join local activities that make your community greener.</p>
           </div>
           <button
             onClick={() => setShowForm((s) => !s)}
-            className="rounded-xl bg-[#2E7D32] px-5 py-3 font-semibold text-white hover:bg-[#256428]"
+            className="w-full rounded-xl bg-[#2E7D32] px-5 py-3 font-semibold text-white hover:bg-[#256428] sm:w-auto"
           >
             + Create Event
           </button>
@@ -158,7 +158,7 @@ export default function EventsPage() {
         {notice && <p className="mt-4 rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-700">{notice}</p>}
 
         {showForm && (
-          <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-2xl border border-[#E8F5E9] bg-white p-6">
+          <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-6">
             {error && <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
             <div>
               <label htmlFor="ev-title" className="mb-1 block text-sm font-medium text-[#1F2937]">Event Name</label>
@@ -194,7 +194,7 @@ export default function EventsPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="rounded-xl bg-[#2E7D32] px-6 py-2.5 font-semibold text-white hover:bg-[#256428] disabled:opacity-60"
+              className="w-full rounded-xl bg-[#2E7D32] px-6 py-2.5 font-semibold text-white hover:bg-[#256428] disabled:opacity-60 sm:w-auto"
             >
               {submitting ? "Creating..." : "Create Event (+50 pts)"}
             </button>
@@ -247,7 +247,7 @@ export default function EventsPage() {
               events.map((ev) => {
                 const alreadyJoined = user ? ev.participants.includes(user.id) : false;
                 return (
-                  <div key={ev.id} className={`rounded-2xl border border-[#E8F5E9] bg-white p-5 ${loading ? "opacity-60" : ""}`}>
+                  <div key={ev.id} className={`rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5 ${loading ? "opacity-60" : ""}`}>
                     <span className="rounded-full bg-[#E8F5E9] px-3 py-1 text-xs font-semibold text-[#2E7D32]">{ev.category}</span>
                     <h3 className="mt-3 text-lg font-bold text-[#1F2937]">🌳 {ev.title}</h3>
                     {ev.description && <p className="mt-1 text-sm text-[#6B7280]">{ev.description}</p>}
@@ -261,7 +261,7 @@ export default function EventsPage() {
                         {ev.organizedBy}
                       </Link>
                     </p>
-                    <div className="mt-4 flex items-center justify-between">
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                       <span className="text-sm font-medium text-[#1F2937]">{ev.participantCount} people joined</span>
                       <button
                         onClick={() => onJoin(ev.id)}
