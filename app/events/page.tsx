@@ -2,12 +2,15 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
+
 import { useUser } from "@/lib/useUser";
 import { EVENT_CATEGORIES } from "@/lib/constants";
+
 import ListingActions from "@/components/ListingActions";
 import SearchFilters from "@/components/SearchFilters";
 import LocationPicker from "@/components/LocationPicker";
 import LeafletMap, { type MapMarker } from "@/components/Map";
+import ListingImagePicker from "@/components/ListingImagePicker";
 
 interface EventItem {
   id: string;
