@@ -8,6 +8,7 @@ import { ACADEMIC_CATEGORIES, RESOURCE_CATEGORIES, SUGGESTED_TAGS } from "@/lib/
 import ListingActions from "@/components/ListingActions";
 import SearchFilters from "@/components/SearchFilters";
 import { RatingBadge } from "@/components/StarRating";
+import ListingImagePicker from "@/components/ListingImagePicker";
 
 interface ResourcePost {
   id: string;
@@ -22,6 +23,7 @@ interface ResourcePost {
   postedById: string;
   posterRating: { average: number | null; count: number };
   createdAt: string;
+  imageUrl: string | null;
 }
 
 const isAcademic = (c: string) => (ACADEMIC_CATEGORIES as readonly string[]).includes(c);
@@ -47,6 +49,7 @@ export default function ResourcesPage() {
   const [condition, setCondition] = useState("Good");
   const [price, setPrice] = useState("Free");
   const [tagInput, setTagInput] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query.trim()), 250);
@@ -83,11 +86,15 @@ export default function ResourcesPage() {
       return;
     }
     setSubmitting(true);
-    const res = await fetch("/api/resources", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, description, category, condition, price, tags: tagInput }),
-    });
+    const form = new FormData();
+    form.append("title", title);
+    form.append("description", description);
+    form.append("category", category);
+    form.append("condition", condition);
+    form.append("price", price);
+    form.append("tags", tagInput);
+    if (imageFile) form.append("image", imageFile);
+    const res = await fetch("/api/resources", { method: "POST", body: form });
     const data = await res.json();
     setSubmitting(false);
     if (!res.ok) {
@@ -98,6 +105,7 @@ export default function ResourcesPage() {
     setDescription("");
     setPrice("Free");
     setTagInput("");
+    setImageFile(null);
     setShowForm(false);
     setReload((n) => n + 1);
     await refresh();
@@ -145,6 +153,7 @@ export default function ResourcesPage() {
               <label htmlFor="res-desc" className="mb-1 block text-sm font-medium text-[#1F2937]">Description</label>
               <textarea id="res-desc" value={description} onChange={(e) => setDescription(e.target.value)} rows={3} maxLength={1000} className={inputClass} />
             </div>
+            <ListingImagePicker id="resource-image" file={imageFile} onChange={setImageFile} />
             <div className="grid gap-4 sm:grid-cols-3">
               <div>
                 <label htmlFor="res-cat" className="mb-1 block text-sm font-medium text-[#1F2937]">Category</label>
@@ -215,10 +224,9 @@ export default function ResourcesPage() {
             </p>
           ) : (
             posts.map((p) => (
-              <div key={p.id} className={`rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5 ${loading ? "opacity-60" : ""}`}>
-                <div className="flex h-24 items-center justify-center rounded-lg bg-[#E8F5E9] text-4xl">
-                  {isAcademic(p.category) ? "🎓" : "📦"}
-                </div>
+              <div key={p.id} className={`overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white ${loading ? "opacity-60" : ""}`}>
+                {p.imageUrl ? <img src={p.imageUrl} alt={p.title} className="h-48 w-full object-cover" loading="lazy" /> : <div className="flex h-24 items-center justify-center bg-[#E8F5E9] text-4xl">{isAcademic(p.category) ? "🎓" : "📦"}</div>}
+                <div className="p-4 sm:p-5">
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <span className="rounded-full bg-[#E8F5E9] px-3 py-1 text-xs font-semibold text-[#2E7D32]">{p.category}</span>
                   {p.status === "reserved" && (
@@ -259,9 +267,10 @@ export default function ResourcesPage() {
                     refreshRequests();
                     setReload((n) => n + 1);
                   }}
-                  editData={{ title: p.title, description: p.description, category: p.category, condition: p.condition, price: p.price, tags: p.tags, location: "" }}
+                  editData={{ title: p.title, description: p.description, category: p.category, condition: p.condition, price: p.price, tags: p.tags, location: "", imageUrl: p.imageUrl }}
                   onChanged={(deleted) => { if (deleted) refreshRequests(); setReload((n) => n + 1); }}
                 />
+                </div>
               </div>
             ))
           )}

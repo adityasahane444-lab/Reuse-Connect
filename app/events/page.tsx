@@ -21,6 +21,7 @@ interface EventItem {
   longitude: number | null;
   participants: string[];
   organizedBy: string;
+  imageUrl: string | null;
   organizedById: string;
   participantCount: number;
 }
@@ -48,6 +49,7 @@ export default function EventsPage() {
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
   const [pin, setPin] = useState<{ lat: number; lng: number } | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query.trim()), 250);
@@ -90,11 +92,16 @@ export default function EventsPage() {
       return;
     }
     setSubmitting(true);
-    const res = await fetch("/api/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, description, category, date, time, location, latitude: pin?.lat, longitude: pin?.lng }),
-    });
+    const form = new FormData();
+    form.append("title", title);
+    form.append("description", description);
+    form.append("category", category);
+    form.append("date", date);
+    form.append("time", time);
+    form.append("location", location);
+    if (pin) { form.append("latitude", String(pin.lat)); form.append("longitude", String(pin.lng)); }
+    if (imageFile) form.append("image", imageFile);
+    const res = await fetch("/api/events", { method: "POST", body: form });
     const data = await res.json();
     setSubmitting(false);
     if (!res.ok) {
@@ -107,6 +114,7 @@ export default function EventsPage() {
     setTime("");
     setLocation("");
     setPin(null);
+    setImageFile(null);
     setShowForm(false);
     setReload((n) => n + 1);
     await refresh();
@@ -168,6 +176,7 @@ export default function EventsPage() {
               <label htmlFor="ev-desc" className="mb-1 block text-sm font-medium text-[#1F2937]">Description</label>
               <textarea id="ev-desc" value={description} onChange={(e) => setDescription(e.target.value)} rows={3} className={inputClass} />
             </div>
+            <ListingImagePicker id="event-image" file={imageFile} onChange={setImageFile} />
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="ev-cat" className="mb-1 block text-sm font-medium text-[#1F2937]">Category</label>
@@ -247,7 +256,9 @@ export default function EventsPage() {
               events.map((ev) => {
                 const alreadyJoined = user ? ev.participants.includes(user.id) : false;
                 return (
-                  <div key={ev.id} className={`rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5 ${loading ? "opacity-60" : ""}`}>
+                  <div key={ev.id} className={`overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white ${loading ? "opacity-60" : ""}`}>
+                    {ev.imageUrl ? <img src={ev.imageUrl} alt={ev.title} className="h-44 w-full object-cover" loading="lazy" /> : null}
+                    <div className="p-4 sm:p-5">
                     <span className="rounded-full bg-[#E8F5E9] px-3 py-1 text-xs font-semibold text-[#2E7D32]">{ev.category}</span>
                     <h3 className="mt-3 text-lg font-bold text-[#1F2937]">🌳 {ev.title}</h3>
                     {ev.description && <p className="mt-1 text-sm text-[#6B7280]">{ev.description}</p>}
@@ -277,9 +288,10 @@ export default function EventsPage() {
                       itemTitle={ev.title}
                       ownerId={ev.organizedById}
                       currentUserId={user?.id ?? null}
-                      editData={{ title: ev.title, description: ev.description, category: ev.category, date: ev.date, time: ev.time, location: ev.location, latitude: ev.latitude, longitude: ev.longitude }}
+                      editData={{ title: ev.title, description: ev.description, category: ev.category, date: ev.date, time: ev.time, location: ev.location, latitude: ev.latitude, longitude: ev.longitude, imageUrl: ev.imageUrl }}
                       onChanged={() => setReload((n) => n + 1)}
                     />
+                    </div>
                   </div>
                 );
               })

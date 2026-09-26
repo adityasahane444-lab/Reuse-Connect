@@ -11,6 +11,7 @@ import SearchFilters from "@/components/SearchFilters";
 import LocationPicker from "@/components/LocationPicker";
 import LeafletMap, { type MapMarker } from "@/components/Map";
 import { RatingBadge } from "@/components/StarRating";
+import ListingImagePicker from "@/components/ListingImagePicker";
 
 interface FoodPost {
   id: string;
@@ -27,6 +28,7 @@ interface FoodPost {
   postedById: string;
   posterRating: { average: number | null; count: number };
   createdAt: string;
+  imageUrl: string | null;
 }
 
 export default function FoodPage() {
@@ -55,6 +57,7 @@ export default function FoodPage() {
   const [location, setLocation] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const [pin, setPin] = useState<{ lat: number; lng: number } | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query.trim()), 250);
@@ -121,20 +124,16 @@ export default function FoodPage() {
     }
     const expiresIso = localInputToIso(expiresAt);
     setSubmitting(true);
-    const res = await fetch("/api/food", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title,
-        description,
-        category,
-        quantity,
-        location,
-        expiresAt: expiresIso,
-        latitude: pin?.lat,
-        longitude: pin?.lng,
-      }),
-    });
+    const form = new FormData();
+    form.append("title", title);
+    form.append("description", description);
+    form.append("category", category);
+    form.append("quantity", quantity);
+    form.append("location", location);
+    if (expiresIso) form.append("expiresAt", expiresIso);
+    if (pin) { form.append("latitude", String(pin.lat)); form.append("longitude", String(pin.lng)); }
+    if (imageFile) form.append("image", imageFile);
+    const res = await fetch("/api/food", { method: "POST", body: form });
     const data = await res.json();
     setSubmitting(false);
     if (!res.ok) {
@@ -147,6 +146,7 @@ export default function FoodPage() {
     setLocation("");
     setExpiresAt("");
     setPin(null);
+    setImageFile(null);
     setShowForm(false);
     setReload((n) => n + 1);
     await refresh();
@@ -188,6 +188,7 @@ export default function FoodPage() {
               <label htmlFor="food-desc" className="mb-1 block text-sm font-medium text-[#1F2937]">Description</label>
               <textarea id="food-desc" value={description} onChange={(e) => setDescription(e.target.value)} rows={3} maxLength={1000} className={inputClass} />
             </div>
+            <ListingImagePicker id="food-image" file={imageFile} onChange={setImageFile} />
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <label htmlFor="food-cat" className="mb-1 block text-sm font-medium text-[#1F2937]">Category</label>
@@ -283,7 +284,9 @@ export default function FoodPage() {
                     ? haversineKm(myPos.lat, myPos.lng, p.latitude, p.longitude)
                     : null;
                 return (
-                  <div key={p.id} className={`rounded-2xl border border-[#E8F5E9] bg-white p-4 sm:p-5 ${loading ? "opacity-60" : ""}`}>
+                  <div key={p.id} className={`overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white sm:p-0 ${loading ? "opacity-60" : ""}`}>
+                    {p.imageUrl ? <img src={p.imageUrl} alt={p.title} className="h-44 w-full object-cover" loading="lazy" /> : null}
+                    <div className="p-4 sm:p-5">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="rounded-full bg-[#E8F5E9] px-3 py-1 text-xs font-semibold text-[#2E7D32]">{p.category}</span>
                       {p.status === "reserved" && (
@@ -324,9 +327,10 @@ export default function FoodPage() {
                         refreshRequests();
                         setReload((n) => n + 1);
                       }}
-                      editData={{ title: p.title, description: p.description, category: p.category, quantity: p.quantity, location: p.location, expiresAt: p.expiresAt, latitude: p.latitude, longitude: p.longitude }}
+                      editData={{ title: p.title, description: p.description, category: p.category, quantity: p.quantity, location: p.location, expiresAt: p.expiresAt, latitude: p.latitude, longitude: p.longitude, imageUrl: p.imageUrl }}
                       onChanged={(deleted) => { if (deleted) refreshRequests(); setReload((n) => n + 1); }}
                     />
+                    </div>
                   </div>
                 );
               })

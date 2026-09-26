@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FOOD_CATEGORIES, RESOURCE_CATEGORIES, EVENT_CATEGORIES, SUGGESTED_TAGS, type ReportItemType } from "@/lib/constants";
 import LocationPicker from "./LocationPicker";
+import ListingImagePicker from "./ListingImagePicker";
 
 export interface ListingEditData {
   title: string;
@@ -18,6 +19,7 @@ export interface ListingEditData {
   time?: string;
   latitude?: number | null;
   longitude?: number | null;
+  imageUrl?: string | null;
 }
 
 interface Props {
@@ -37,15 +39,26 @@ export default function EditListing({ itemType, itemId, initial, onDone, onCance
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [showDelete, setShowDelete] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [removeExistingImage, setRemoveExistingImage] = useState(false);
 
-  useEffect(() => setForm(initial), [initial]);
+  useEffect(() => { setForm(initial); setImageFile(null); setRemoveExistingImage(false); }, [initial]);
   const input = "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E7D32]";
   const set = (key: keyof ListingEditData, value: string) => setForm((f) => ({ ...f, [key]: value }));
 
   async function save() {
     setError(""); setBusy(true);
-    const body = { ...form, tags: itemType === "resource" ? tags : undefined, latitude: pin?.lat ?? null, longitude: pin?.lng ?? null };
-    const res = await fetch(`/api/${itemType === "event" ? "events" : itemType === "food" ? "food" : "resources"}/${itemId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const body = new FormData();
+    body.append("title", form.title);
+    body.append("description", form.description);
+    body.append("category", form.category);
+    if (itemType === "food") { body.append("quantity", form.quantity ?? ""); body.append("location", form.location ?? ""); body.append("expiresAt", form.expiresAt ?? ""); }
+    if (itemType === "resource") { body.append("condition", form.condition ?? ""); body.append("price", form.price ?? "Free"); body.append("tags", tags); }
+    if (itemType === "event") { body.append("date", form.date ?? ""); body.append("time", form.time ?? ""); body.append("location", form.location ?? ""); }
+    body.append("latitude", String(pin?.lat ?? "")); body.append("longitude", String(pin?.lng ?? ""));
+    if (imageFile) body.append("image", imageFile);
+    if (removeExistingImage) body.append("removeImage", "true");
+    const res = await fetch(`/api/${itemType === "event" ? "events" : itemType === "food" ? "food" : "resources"}/${itemId}`, { method: "PATCH", body });
     const data = await res.json().catch(() => ({})); setBusy(false);
     if (!res.ok) { setError(data.error ?? "Could not update this post."); return; }
     onDone(false);
@@ -75,6 +88,7 @@ export default function EditListing({ itemType, itemId, initial, onDone, onCance
           {itemType === "event" && <><div><label className="mb-1 block text-sm font-medium">Date</label><input type="date" value={form.date ?? ""} onChange={e=>set("date",e.target.value)} className={input}/></div><div><label className="mb-1 block text-sm font-medium">Time</label><input type="time" value={form.time ?? ""} onChange={e=>set("time",e.target.value)} className={input}/></div></>}
         </div>
         {itemType === "resource" && <div><label className="mb-1 block text-sm font-medium">Tags</label><input value={tags} onChange={e=>setTags(e.target.value)} placeholder="sppu, textbook, sem-3" className={input}/><div className="mt-2 flex flex-wrap gap-1">{SUGGESTED_TAGS.slice(0,8).map(t=><button key={t} type="button" onClick={()=>{const a=tags.split(",").map(x=>x.trim()).filter(Boolean);if(!a.includes(t))setTags([...a,t].join(", "))}} className="rounded-full border px-2 py-1 text-xs hover:bg-[#E8F5E9]">+ {t}</button>)}</div></div>}
+        <ListingImagePicker id="edit-listing-image" file={imageFile} onChange={(file) => { setImageFile(file); if (file) setRemoveExistingImage(false); }} existingUrl={!removeExistingImage ? (form.imageUrl ?? null) : null} onRemoveExisting={() => setRemoveExistingImage(true)} />
         <div><label className="mb-1 block text-sm font-medium">Location</label><input value={form.location} onChange={e=>set("location",e.target.value)} className={input}/></div>
         {itemType === "food" && <div><label className="mb-1 block text-sm font-medium">Best before</label><input type="datetime-local" value={form.expiresAt ? new Date(form.expiresAt).toISOString().slice(0,16) : ""} onChange={e=>set("expiresAt", e.target.value ? new Date(e.target.value).toISOString() : "")} className={input}/></div>}
         {(itemType === "food" || itemType === "event") && <LocationPicker value={pin} onChange={setPin}/>} 

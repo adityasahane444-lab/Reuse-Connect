@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { getCurrentUser, awardPoints } from "@/lib/auth";
 import { EVENT_CATEGORIES } from "@/lib/constants";
 import { parseLat, parseLng, sanitizeSearch } from "@/lib/search";
+import { parseListingRequest, uploadListingImage, removeListingImage } from "@/lib/post-images";
 
 interface EventRow {
   id: string;
@@ -16,6 +17,7 @@ interface EventRow {
   longitude: number | null;
   organizer_id: string;
   created_at: string;
+  image_url: string | null;
   users: { name: string } | null;
   event_participants: { user_id: string }[] | null;
 }
@@ -28,7 +30,7 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from("events")
     .select(
-      "id, organizer_id, title, description, category, date, time, location, latitude, longitude, created_at, users(name), event_participants(user_id)"
+      "id, organizer_id, title, description, category, date, time, location, latitude, longitude, created_at, image_url, users(name), event_participants(user_id)"
     )
     .order("date", { ascending: true })
     .limit(200);
@@ -51,6 +53,7 @@ export async function GET(req: NextRequest) {
     longitude: e.longitude,
     organizedById: e.organizer_id,
     organizedBy: e.users?.name ?? "Unknown",
+    imageUrl: e.image_url,
     participants: (e.event_participants ?? []).map((p) => p.user_id),
     participantCount: (e.event_participants ?? []).length,
   }));
@@ -62,7 +65,9 @@ export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Please log in to create an event." }, { status: 401 });
 
-  const body = await req.json().catch(() => null);
+  const parsed = await parseListingRequest(req);
+  const body = parsed.body;
+  const image = parsed.image;
   const { title, description, category, date, time, location } = body ?? {};
   if (!title || !date) {
     return NextResponse.json({ error: "Title and date are required." }, { status: 400 });
@@ -73,6 +78,13 @@ export async function POST(req: NextRequest) {
   const latitude = parseLat(body?.latitude);
   const longitude = parseLng(body?.longitude);
   const hasCoords = latitude !== null && longitude !== null;
+
+  let uploaded: { publicUrl: string; path: string } | null = null;
+  try {
+    uploaded = await uploadListingImage(user.id, "event", image);
+  } catch (err) {
+    return NextResponse.json({ error: err instanceof Error ? err.message : "Could not upload the image." }, { status: 400 });
+  }
 
   const { data: event, error } = await supabase
     .from("events")
@@ -86,11 +98,13 @@ export async function POST(req: NextRequest) {
       location: String(location ?? "").trim(),
       latitude: hasCoords ? latitude : null,
       longitude: hasCoords ? longitude : null,
+      image_url: uploaded?.publicUrl ?? null,
     })
     .select()
     .single();
 
   if (error || !event) {
+    if (uploaded) await removeListingImage(uploaded.publicUrl);
     return NextResponse.json({ error: "Could not create event. Please try again." }, { status: 500 });
   }
 

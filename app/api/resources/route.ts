@@ -5,6 +5,7 @@ import { RESOURCE_CATEGORIES } from "@/lib/constants";
 import { badRequest, readJson, str, unauthorized } from "@/lib/http";
 import { parseTags, sanitizeSearch, slugTag } from "@/lib/search";
 import { ratingSummaries } from "@/lib/ratings";
+import { parseListingRequest, uploadListingImage, removeListingImage } from "@/lib/post-images";
 
 interface ResourcePostRow {
   id: string;
@@ -17,6 +18,7 @@ interface ResourcePostRow {
   tags: string[] | null;
   status: string;
   created_at: string;
+  image_url: string | null;
   users: { name: string } | null;
 }
 
@@ -35,7 +37,7 @@ export async function GET(req: NextRequest) {
 
   let query = supabase
     .from("resource_posts")
-    .select("id, user_id, title, description, category, condition, price, tags, status, created_at, users(name)")
+    .select("id, user_id, title, description, category, condition, price, tags, status, created_at, image_url, users(name)")
     .order("created_at", { ascending: false })
     .limit(200);
 
@@ -65,6 +67,7 @@ export async function GET(req: NextRequest) {
     tags: p.tags ?? [],
     status: p.status,
     createdAt: p.created_at,
+    imageUrl: p.image_url,
     postedBy: p.users?.name ?? "Unknown",
     postedById: p.user_id,
     posterRating: ratings.get(p.user_id) ?? { average: null, count: 0 },
@@ -77,11 +80,18 @@ export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) return unauthorized("Please log in to post an item.");
 
-  const body = await readJson(req);
+  const { body, image } = await parseListingRequest(req);
   const title = str(body.title, 120);
   const category = str(body.category, 60);
   if (!title || !category) return badRequest("Title and category are required.");
   if (!(RESOURCE_CATEGORIES as readonly string[]).includes(category)) return badRequest("Unknown category.");
+
+  let uploaded: { publicUrl: string; path: string } | null = null;
+  try {
+    uploaded = await uploadListingImage(user.id, "resource", image);
+  } catch (err) {
+    return badRequest(err instanceof Error ? err.message : "Could not upload the image.");
+  }
 
   const { data: post, error } = await supabase
     .from("resource_posts")
@@ -93,11 +103,13 @@ export async function POST(req: NextRequest) {
       condition: str(body.condition, 80),
       price: str(body.price, 40) || "Free",
       tags: parseTags(body.tags),
+      image_url: uploaded?.publicUrl ?? null,
     })
     .select()
     .single();
 
   if (error || !post) {
+    if (uploaded) await removeListingImage(uploaded.publicUrl);
     return NextResponse.json({ error: "Could not post. Please try again." }, { status: 500 });
   }
 

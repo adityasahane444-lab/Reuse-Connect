@@ -5,6 +5,7 @@ import { FOOD_CATEGORIES } from "@/lib/constants";
 import { badRequest, readJson, str, unauthorized } from "@/lib/http";
 import { parseLat, parseLng, sanitizeSearch } from "@/lib/search";
 import { ratingSummaries } from "@/lib/ratings";
+import { parseListingRequest, uploadListingImage, removeListingImage } from "@/lib/post-images";
 
 interface FoodPostRow {
   id: string;
@@ -19,6 +20,7 @@ interface FoodPostRow {
   expires_at: string | null;
   status: string;
   created_at: string;
+  image_url: string | null;
   users: { name: string } | null;
 }
 
@@ -34,7 +36,7 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from("food_posts")
     .select(
-      "id, user_id, title, description, category, quantity, location, latitude, longitude, expires_at, status, created_at, users(name)"
+      "id, user_id, title, description, category, quantity, location, latitude, longitude, expires_at, status, created_at, image_url, users(name)"
     )
     .order("created_at", { ascending: false })
     .limit(200);
@@ -63,6 +65,7 @@ export async function GET(req: NextRequest) {
     expiresAt: p.expires_at,
     status: p.status,
     createdAt: p.created_at,
+    imageUrl: p.image_url,
     postedBy: p.users?.name ?? "Unknown",
     postedById: p.user_id,
     posterRating: ratings.get(p.user_id) ?? { average: null, count: 0 },
@@ -75,7 +78,7 @@ export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) return unauthorized("Please log in to post food.");
 
-  const body = await readJson(req);
+  const { body, image } = await parseListingRequest(req);
   const title = str(body.title, 120);
   const category = str(body.category, 60);
   if (!title || !category) return badRequest("Title and category are required.");
@@ -93,6 +96,13 @@ export async function POST(req: NextRequest) {
   const longitude = parseLng(body.longitude);
   const hasCoords = latitude !== null && longitude !== null;
 
+  let uploaded: { publicUrl: string; path: string } | null = null;
+  try {
+    uploaded = await uploadListingImage(user.id, "food", image);
+  } catch (err) {
+    return badRequest(err instanceof Error ? err.message : "Could not upload the image.");
+  }
+
   const { data: post, error } = await supabase
     .from("food_posts")
     .insert({
@@ -105,11 +115,13 @@ export async function POST(req: NextRequest) {
       latitude: hasCoords ? latitude : null,
       longitude: hasCoords ? longitude : null,
       expires_at: expiresAt,
+      image_url: uploaded?.publicUrl ?? null,
     })
     .select()
     .single();
 
   if (error || !post) {
+    if (uploaded) await removeListingImage(uploaded.publicUrl);
     return NextResponse.json({ error: "Could not post. Please try again." }, { status: 500 });
   }
 

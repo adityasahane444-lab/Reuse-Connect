@@ -32,6 +32,7 @@ create table if not exists food_posts (
   category text not null,
   quantity text default '',
   location text default '',
+  image_url text,
   created_at timestamptz not null default now()
 );
 
@@ -43,6 +44,7 @@ create table if not exists resource_posts (
   category text not null,
   condition text default '',
   price text default 'Free',
+  image_url text,
   created_at timestamptz not null default now()
 );
 
@@ -55,6 +57,7 @@ create table if not exists events (
   date text not null,
   time text default '',
   location text default '',
+  image_url text,
   created_at timestamptz not null default now()
 );
 
@@ -270,3 +273,13 @@ create index if not exists users_email_verified_idx on users (email_verified);
 -- Existing accounts are marked verified by the default above. New registrations explicitly set false.
 -- To make yourself an admin:
 -- update users set is_admin = true where email = 'your-email@example.com';
+
+-- Listing images bucket
+do $$
+begin
+  if exists (select 1 from information_schema.schemata where schema_name = 'storage') then
+    insert into storage.buckets (id, name, public)
+    values ('post-images', 'post-images', true)
+    on conflict (id) do nothing;
+  end if;
+end $$;

@@ -181,6 +181,12 @@ Then log out and log in again (or refresh the session). The account menu will sh
 
 Do not expose or share your Supabase service-role key. Admin permissions are enforced server-side by `getCurrentAdmin()`.
 
+## 📷 Listing photos
+
+Food, Resource and Event posts support one optional photo. Photos are stored in the Supabase `post-images` public bucket and displayed on listing cards so other users can inspect an item before sending a request. Uploads accept JPG, PNG or WebP images up to 5 MB and are processed only through the authenticated server API.
+
+Run `supabase/migration-004-post-images.sql` once after migration 003. The photo helps users visually inspect an item, but a photo alone does not guarantee that an item is authentic or safe.
+
 ## ✏️ Edit / delete your posts
 
 Owners now get an **✏️ Edit** button on their own Food, Resource, and Event listings.

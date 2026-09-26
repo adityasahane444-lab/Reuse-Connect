@@ -28,6 +28,7 @@ create table if not exists food_posts (
   category text not null,
   quantity text default '',
   location text default '',
+  image_url text,
   created_at timestamptz not null default now()
 );
 
@@ -39,6 +40,7 @@ create table if not exists resource_posts (
   category text not null,
   condition text default '',
   price text default 'Free',
+  image_url text,
   created_at timestamptz not null default now()
 );
 
@@ -51,6 +53,7 @@ create table if not exists events (
   date text not null,
   time text default '',
   location text default '',
+  image_url text,
   created_at timestamptz not null default now()
 );
 
