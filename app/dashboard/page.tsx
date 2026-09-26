@@ -35,7 +35,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+      <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
         <p className="mx-auto max-w-4xl text-[#6B7280]">Loading dashboard...</p>
       </main>
     );
@@ -60,7 +60,7 @@ export default function DashboardPage() {
   const { user, rank, foodPosts, resourcePosts, organizedEvents, joinedEvents, pointsHistory } = data;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-4xl">
         <div className="flex flex-col gap-4 rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -75,7 +75,19 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-4">
+        <div className="mobile-quick-actions mt-4 md:hidden">
+          <Link href="/food" className="mobile-quick-action">
+            <span className="mobile-quick-icon">🍛</span><span><b>Share Food</b><small>Help reduce waste</small></span>
+          </Link>
+          <Link href="/resources" className="mobile-quick-action">
+            <span className="mobile-quick-icon">📦</span><span><b>Post an Item</b><small>Give things a second life</small></span>
+          </Link>
+          <Link href="/events" className="mobile-quick-action">
+            <span className="mobile-quick-icon">🌳</span><span><b>Create / Join Event</b><small>Act with your community</small></span>
+          </Link>
+        </div>
+
+        <div className="mobile-stat-grid mt-6 grid gap-4 sm:grid-cols-4">
           <Stat label="Food Posts" value={foodPosts.length} />
           <Stat label="Items Posted" value={resourcePosts.length} />
           <Stat label="Events Organized" value={organizedEvents.length} />

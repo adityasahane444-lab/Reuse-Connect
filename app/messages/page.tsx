@@ -121,7 +121,7 @@ function MessagesPageInner() {
     loadConversations();
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
+  if (userLoading) return <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in to see your messages." />;
 
   return (
@@ -233,7 +233,7 @@ function MessagesPageInner() {
 
 export default function MessagesPage() {
   return (
-    <Suspense fallback={<main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />}>
+    <Suspense fallback={<main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />}>
       <MessagesPageInner />
     </Suspense>
   );

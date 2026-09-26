@@ -111,7 +111,7 @@ export default function ResourcesPage() {
     }`;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>

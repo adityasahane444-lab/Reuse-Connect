@@ -135,7 +135,7 @@ export default function EventsPage() {
     "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E7D32]";
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>

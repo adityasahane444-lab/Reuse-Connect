@@ -61,7 +61,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center bg-green-50 px-4 py-8 sm:px-6 sm:py-16">
+    <main className="auth-page flex flex-1 items-center justify-center bg-green-50 px-4 py-8 sm:px-6 sm:py-16">
       <div className="w-full max-w-md rounded-3xl bg-white p-5 shadow-xl sm:p-8">
         <div className="text-center">
           <Link href="/" className="text-2xl font-bold text-green-700">

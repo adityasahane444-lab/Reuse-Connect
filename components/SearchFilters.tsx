@@ -19,7 +19,7 @@ export default function SearchFilters({ query, onQuery, placeholder, categories,
     }`;
 
   return (
-    <div className="mt-8 space-y-4">
+    <div className="mobile-filter-shell mt-8 space-y-4">
       <div className="relative">
         <label htmlFor="listing-search" className="sr-only">
           {label}

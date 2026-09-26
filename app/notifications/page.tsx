@@ -33,13 +33,13 @@ export default function NotificationsPage() {
     pingActivity();
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
+  if (userLoading) return <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in to see your notifications." />;
 
   const unread = items?.filter((n) => !n.read).length ?? 0;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-2xl">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">Notifications</h1>

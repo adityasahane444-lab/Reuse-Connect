@@ -84,7 +84,7 @@ export default function RequestsPage() {
     await load();
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
+  if (userLoading) return <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in to manage your exchanges." />;
 
   const list = data?.[tab] ?? [];
@@ -93,7 +93,7 @@ export default function RequestsPage() {
   const btn = "rounded-md px-3 py-1.5 text-sm font-semibold disabled:opacity-60";
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-3xl">
         <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">My exchanges</h1>
         <p className="mt-1 text-[#6B7280]">Requests for your listings, and requests you&apos;ve made.</p>

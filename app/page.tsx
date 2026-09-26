@@ -65,7 +65,7 @@ export default async function Home() {
   );
 
   return (
-    <main className="min-h-screen bg-[#f6fbf7] text-gray-900">
+    <main className="home-page min-h-screen bg-[#f6fbf7] text-gray-900">
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 pb-14 pt-12 sm:px-6 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
@@ -136,7 +136,7 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mobile-category-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((category) => (
               <Link
                 key={category.title}

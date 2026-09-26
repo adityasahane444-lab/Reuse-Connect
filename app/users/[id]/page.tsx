@@ -46,12 +46,12 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
       </main>
     );
   }
-  if (data === null) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
+  if (data === null) return <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
 
   const { profile, stats, reviews } = data;
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-2xl space-y-6">
         <div className="rounded-2xl border border-[#E8F5E9] bg-white p-5 sm:p-6">
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center">

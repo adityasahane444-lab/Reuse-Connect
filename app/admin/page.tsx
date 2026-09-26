@@ -112,7 +112,7 @@ export default function AdminPage() {
     if (res.ok) await loadUsers(userQuery);
   }
 
-  if (userLoading) return <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
+  if (userLoading) return <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10" />;
   if (!user) return <LoginPrompt message="Please log in." />;
   if (!user.isAdmin) {
     return (
@@ -123,7 +123,7 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-4xl">
         <h1 className="text-2xl font-bold sm:text-3xl text-[#1F2937]">Admin dashboard</h1>
 

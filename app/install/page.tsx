@@ -35,7 +35,7 @@ export default function InstallPage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-5 sm:py-12">
+    <main className="install-page mx-auto w-full max-w-2xl px-4 py-8 sm:px-5 sm:py-12">
       <div className="rounded-3xl border border-green-100 bg-white p-5 shadow-sm sm:p-10">
         <div className="mb-6 text-5xl">🌱</div>
         <h1 className="text-2xl font-bold sm:text-3xl text-gray-900">Install Reuse &amp; Connect</h1>

@@ -88,7 +88,7 @@ export default function ListingActions({
   const messageHref = `/messages?to=${ownerId}&about=${encodeURIComponent(itemTitle)}`;
 
   return (
-    <div className="mt-4 border-t border-[#E8F5E9] pt-3">
+    <div className="listing-actions mt-4 border-t border-[#E8F5E9] pt-3">
       {isOwner ? (
         <div className="flex flex-wrap items-center gap-2">
           <p className="text-xs text-[#6B7280]">

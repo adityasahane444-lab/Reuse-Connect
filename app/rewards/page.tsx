@@ -32,7 +32,7 @@ export default function RewardsPage() {
   }, []);
 
   return (
-    <main className="flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
+    <main className="mobile-page flex-1 bg-[#F7FAF7] px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-4xl">
         <div className="rounded-3xl bg-[#2E7D32] px-5 py-8 sm:px-8 sm:py-12 text-center text-white shadow-xl">
           <div className="text-5xl">🌱</div>

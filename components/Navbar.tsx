@@ -8,7 +8,7 @@ import NotificationBell from "./NotificationBell";
 import UserMenu from "./UserMenu";
 import InstallAppButton from "./InstallAppButton";
 import MobileBottomNav from "./MobileBottomNav";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle } from "./AppIcons";
 
 const links = [
   { href: "/food", label: "Food" },
@@ -32,19 +32,19 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-[#E5EFE7] bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80">
-        <div className="mx-auto flex min-h-[4rem] w-full max-w-6xl items-center gap-2 px-3 sm:px-4">
+        <div className="navbar-inner mx-auto flex min-h-[4rem] w-full max-w-6xl items-center gap-2 px-3 sm:px-4">
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <Link
               href="/"
-              className="group flex min-w-0 shrink items-center gap-2 rounded-xl py-1.5 text-base font-bold tracking-tight text-[#166534] outline-none transition hover:text-[#14532D] focus-visible:ring-2 focus-visible:ring-[#2E7D32] sm:gap-2.5 sm:text-lg"
+              className="brand-link group flex min-w-0 shrink items-center gap-2 rounded-xl py-1.5 text-base font-bold tracking-tight text-[#166534] outline-none transition hover:text-[#14532D] focus-visible:ring-2 focus-visible:ring-[#2E7D32] sm:gap-2.5 sm:text-lg"
               aria-label="Reuse & Connect home"
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#E8F5E9] text-lg shadow-sm transition group-hover:scale-105 sm:h-10 sm:w-10">
+              <span className="brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#E8F5E9] text-lg shadow-sm transition group-hover:scale-105 sm:h-10 sm:w-10">
                 🌱
               </span>
               <span className="truncate">Reuse &amp; Connect</span>
             </Link>
-            <InstallAppButton />
+            <div className="mobile-install-slot"><InstallAppButton /></div>
           </div>
 
           <nav className="hidden shrink-0 items-center gap-6 text-sm font-medium text-[#1F2937] md:flex">
