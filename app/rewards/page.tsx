@@ -11,8 +11,8 @@ interface LeaderboardEntry {
 }
 
 const pointsTable = [
-  { action: "Post Surplus Food", points: 50 },
-  { action: "Donate / Post an Item", points: 30 },
+  { action: "Food successfully delivered", points: 50 },
+  { action: "Item successfully delivered", points: 30 },
   { action: "Organize an Event", points: 50 },
   { action: "Join an Event", points: 20 },
 ];
@@ -45,6 +45,7 @@ export default function RewardsPage() {
 
         <section className="mt-10">
           <h2 className="text-xl font-bold text-[#1F2937]">How you earn Green Points</h2>
+          <p className="mt-2 text-sm text-[#6B7280]">Food and item points are awarded only after the recipient confirms receipt.</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {pointsTable.map((p) => (
               <div

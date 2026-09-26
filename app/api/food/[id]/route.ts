@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, reverseExchangeReward } from "@/lib/auth";
 import { FOOD_CATEGORIES } from "@/lib/constants";
 import { badRequest, isUuid, notFound, readJson, str, unauthorized, serverError } from "@/lib/http";
 import { parseLat, parseLng } from "@/lib/search";
@@ -16,7 +16,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   let expiresAt: string | null = null;
   if (body.expiresAt) { const d = new Date(String(body.expiresAt)); if (Number.isNaN(d.getTime())) return badRequest("Invalid expiry time."); if (d.getTime() <= Date.now()) return badRequest("Expiry time must be in the future."); expiresAt = d.toISOString(); }
   const latitude = parseLat(body.latitude), longitude = parseLng(body.longitude);
-  const { data: existing } = await supabase.from("food_posts").select("id, user_id, image_url").eq("id", id).maybeSingle();
+  const { data: existing } = await supabase.from("food_posts").select("id, user_id, title, image_url").eq("id", id).maybeSingle();
   if (!existing) return notFound("Food post not found.");
   if (existing.user_id !== user.id) return NextResponse.json({ error: "You can only edit your own post." }, { status: 403 });
   let uploaded: { publicUrl: string; path: string } | null = null;
@@ -36,6 +36,16 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   if (!existing) return notFound("Food post not found.");
   if (existing.user_id !== user.id) return NextResponse.json({ error: "You can only delete your own post." }, { status: 403 });
   const now = new Date().toISOString();
+  const { data: completedRequests } = await supabase
+    .from("exchange_requests")
+    .select("id")
+    .eq("item_type", "food")
+    .eq("item_id", id)
+    .eq("owner_id", existing.user_id)
+    .eq("status", "completed");
+  for (const request of (completedRequests ?? []) as { id: string }[]) {
+    await reverseExchangeReward(request.id, "food", existing.user_id, existing.title);
+  }
   await supabase.from("exchange_requests").update({ status: "cancelled", updated_at: now }).eq("item_type", "food").eq("item_id", id).in("status", ["pending", "accepted"]);
   const { error } = await supabase.from("food_posts").delete().eq("id", id);
   if (error) return serverError("Could not delete the post.");

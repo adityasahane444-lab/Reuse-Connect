@@ -108,6 +108,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not create event. Please try again." }, { status: 500 });
   }
 
-  await awardPoints(user.id, 50, `Organized event: ${event.title}`);
+  await awardPoints(user.id, 50, `Event organized: ${event.title}`, `event:${event.id}:organized`);
   return NextResponse.json({ event });
 }

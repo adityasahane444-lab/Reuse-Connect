@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, awardPoints } from "@/lib/auth";
 import { ITEM_TABLE, type ItemType } from "@/lib/constants";
 import { badRequest, conflict, forbidden, isUuid, notFound, readJson, unauthorized } from "@/lib/http";
 import { notify } from "@/lib/notify";
@@ -23,7 +23,7 @@ interface RequestRow {
  *  accept   — owner, pending  → accepted (item reserved, other pending requests declined, chat opened)
  *  decline  — owner, pending  → declined
  *  cancel   — requester, pending|accepted → cancelled (item freed if it was reserved)
- *  complete — owner or requester, accepted → completed (item handed over; both can now rate)
+ *  complete — requester only, accepted → completed (recipient confirms receipt; owner earns Green Points)
  *
  * Every transition is a conditional update on the previous status, so two people clicking at once
  * can never both "win".
@@ -136,14 +136,25 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     }
 
     case "complete": {
+      if (!isRequester) return forbidden("Only the recipient can confirm that they received the item.");
       if (!(await transition(["accepted"], "completed", { completed_at: now }))) {
         return conflict("Only an accepted request can be marked complete.");
       }
       await supabase.from(table).update({ status: "completed" }).eq("id", r.item_id);
+
+      const points = r.item_type === "food" ? 50 : 30;
+      const label = r.item_type === "food" ? "Food delivered" : "Item delivered";
+      await awardPoints(
+        r.owner_id,
+        points,
+        `${label}: ${r.item_title}`,
+        `exchange:${r.id}:earned`,
+      );
+
       await notify(other, {
         type: "request_completed",
         title: `Handover of "${r.item_title}" marked complete`,
-        body: "How did it go? Leave a quick rating.",
+        body: "The recipient confirmed receipt. Green Points were awarded to the poster.",
         link: "/requests",
       });
       break;

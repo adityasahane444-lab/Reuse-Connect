@@ -138,7 +138,7 @@ export default function ResourcesPage() {
 
         {!user && (
           <p className="mt-4 rounded-lg bg-[#E8F5E9] px-4 py-3 text-sm text-[#256428]">
-            Log in to post an item and earn 30 Green Points per post.
+            Log in to post an item. Earn 30 Green Points when the recipient confirms receipt.
           </p>
         )}
 
@@ -190,7 +190,7 @@ export default function ResourcesPage() {
               disabled={submitting}
               className="w-full rounded-xl bg-[#2E7D32] px-6 py-2.5 font-semibold text-white hover:bg-[#256428] disabled:opacity-60 sm:w-auto"
             >
-              {submitting ? "Posting..." : "Post Item (+30 pts)"}
+              {submitting ? "Posting..." : "Post Item"}
             </button>
           </form>
         )}

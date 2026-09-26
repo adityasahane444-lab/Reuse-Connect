@@ -209,7 +209,9 @@ export default function ProfilePage() {
                 <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
                   <span className="text-[#1F2937]">{p.reason}</span>
                   <span className="flex items-center gap-2">
-                    <span className="font-semibold text-[#2E7D32]">+{p.amount}</span>
+                    <span className={`font-semibold ${p.amount < 0 ? "text-red-600" : "text-[#2E7D32]"}`}>
+                      {p.amount > 0 ? `+${p.amount}` : p.amount} pts
+                    </span>
                     <span className="text-xs text-[#6B7280]" title={formatDateTime(p.createdAt)}>{timeAgo(p.createdAt)}</span>
                   </span>
                 </li>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getCurrentUser, awardPoints } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { FOOD_CATEGORIES } from "@/lib/constants";
 import { badRequest, readJson, str, unauthorized } from "@/lib/http";
 import { parseLat, parseLng, sanitizeSearch } from "@/lib/search";
@@ -125,6 +125,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not post. Please try again." }, { status: 500 });
   }
 
-  await awardPoints(user.id, 50, `Posted surplus food: ${post.title}`);
   return NextResponse.json({ post });
 }

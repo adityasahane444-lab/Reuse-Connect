@@ -70,14 +70,43 @@ create table if not exists points_tx (
   user_id uuid not null references users(id) on delete cascade,
   amount integer not null,
   reason text not null,
+  source_key text,
   created_at timestamptz not null default now()
 );
 
--- Atomically increments a user's green_points (used when awarding points)
-create or replace function increment_green_points(p_user_id uuid, p_amount integer)
+create unique index if not exists points_tx_source_key_idx
+  on points_tx (source_key);
+
+-- Atomically records a points transaction and updates the user's balance.
+create or replace function apply_points(
+  p_user_id uuid,
+  p_amount integer,
+  p_reason text,
+  p_source_key text default null
+)
 returns void as $$
+declare
+  inserted_count integer;
 begin
-  update users set green_points = green_points + p_amount where id = p_user_id;
+  if p_amount = 0 then
+    return;
+  end if;
+
+  if p_source_key is null then
+    insert into points_tx (user_id, amount, reason)
+    values (p_user_id, p_amount, p_reason);
+  else
+    insert into points_tx (user_id, amount, reason, source_key)
+    values (p_user_id, p_amount, p_reason, p_source_key)
+    on conflict (source_key) do nothing;
+  end if;
+
+  get diagnostics inserted_count = row_count;
+  if inserted_count = 1 then
+    update users
+    set green_points = green_points + p_amount
+    where id = p_user_id;
+  end if;
 end;
 $$ language plpgsql;
 

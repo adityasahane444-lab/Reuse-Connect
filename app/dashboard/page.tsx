@@ -124,13 +124,15 @@ export default function DashboardPage() {
           <h2 className="text-lg font-bold text-[#1F2937]">Green Points Activity</h2>
           <div className="mt-3 overflow-hidden rounded-2xl border border-[#E8F5E9] bg-white">
             {pointsHistory.length === 0 ? (
-              <p className="p-5 text-sm text-[#6B7280]">No activity yet. Post food, items, or join an event to start earning.</p>
+              <p className="p-5 text-sm text-[#6B7280]">No activity yet. Complete a handover or join an event to start earning.</p>
             ) : (
               <ul className="divide-y divide-[#E8F5E9]">
                 {pointsHistory.map((tx) => (
                   <li key={tx.id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 text-sm">
                     <span className="text-[#1F2937]">{tx.reason}</span>
-                    <span className="font-bold text-[#2E7D32]">+{tx.amount}</span>
+                    <span className={`font-bold ${tx.amount < 0 ? "text-red-600" : "text-[#2E7D32]"}`}>
+                      {tx.amount > 0 ? `+${tx.amount}` : tx.amount} pts
+                    </span>
                   </li>
                 ))}
               </ul>

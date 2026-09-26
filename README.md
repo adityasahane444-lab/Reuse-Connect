@@ -181,6 +181,9 @@ Then log out and log in again (or refresh the session). The account menu will sh
 
 Do not expose or share your Supabase service-role key. Admin permissions are enforced server-side by `getCurrentAdmin()`.
 
+## 🌱 Green Points rules
+Food and resource listing points are awarded only after the recipient confirms receipt (50 for food, 30 for an item). If a completed listing is later deleted or removed by moderators, its earned reward is reversed once. Event organization (+50) and event participation (+20) remain action-based.
+
 ## 📷 Listing photos
 
 Food, Resource and Event posts support one optional photo. Photos are stored in the Supabase `post-images` public bucket and displayed on listing cards so other users can inspect an item before sending a request. Uploads accept JPG, PNG or WebP images up to 5 MB and are processed only through the authenticated server API.

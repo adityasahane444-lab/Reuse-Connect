@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getCurrentAdmin } from "@/lib/auth";
+import { getCurrentAdmin, reverseExchangeReward } from "@/lib/auth";
 import { ITEM_TABLE, type ReportItemType } from "@/lib/constants";
 import { badRequest, forbidden, isUuid, notFound, readJson, serverError } from "@/lib/http";
 import { notify } from "@/lib/notify";
@@ -55,6 +55,19 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
 
   if (item) {
+    if (type !== "event" && ownerId) {
+      const { data: completedRequests } = await supabase
+        .from("exchange_requests")
+        .select("id")
+        .eq("item_type", type)
+        .eq("item_id", report.item_id)
+        .eq("owner_id", ownerId)
+        .eq("status", "completed");
+      for (const request of (completedRequests ?? []) as { id: string }[]) {
+        await reverseExchangeReward(request.id, type as "food" | "resource", ownerId, report.item_title);
+      }
+    }
+
     if (type !== "event") {
       // Free anyone waiting on this listing
       const { data: cancelled } = await supabase

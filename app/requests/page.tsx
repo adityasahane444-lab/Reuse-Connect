@@ -175,9 +175,15 @@ export default function RequestsPage() {
                     )}
                     {r.status === "accepted" && (
                       <>
-                        <button disabled={busy} onClick={() => act(r.id, "complete")} className={`${btn} bg-[#2E7D32] text-white hover:bg-[#256428]`}>
-                          Mark handover complete
-                        </button>
+                        {!isOwner ? (
+                          <button disabled={busy} onClick={() => act(r.id, "complete")} className={`${btn} bg-[#2E7D32] text-white hover:bg-[#256428]`}>
+                            Confirm received
+                          </button>
+                        ) : (
+                          <span className="rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700">
+                            Waiting for recipient
+                          </span>
+                        )}
                         <Link href={`/messages?to=${r.other.id}&about=${encodeURIComponent(r.itemTitle)}`} className={`${btn} border border-[#2E7D32] text-[#2E7D32] hover:bg-[#E8F5E9]`}>
                           💬 Arrange pickup
                         </Link>

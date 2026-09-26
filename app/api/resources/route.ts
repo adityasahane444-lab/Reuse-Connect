@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getCurrentUser, awardPoints } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { RESOURCE_CATEGORIES } from "@/lib/constants";
 import { badRequest, readJson, str, unauthorized } from "@/lib/http";
 import { parseTags, sanitizeSearch, slugTag } from "@/lib/search";
@@ -113,6 +113,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not post. Please try again." }, { status: 500 });
   }
 
-  await awardPoints(user.id, 30, `Posted item: ${post.title}`);
   return NextResponse.json({ post });
 }

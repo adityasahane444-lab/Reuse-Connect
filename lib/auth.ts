@@ -82,7 +82,38 @@ export async function getCurrentAdmin(): Promise<UserRow | null> {
 
 export { toPublicUser as publicUser };
 
-export async function awardPoints(userId: string, amount: number, reason: string) {
-  await supabase.from("points_tx").insert({ user_id: userId, amount, reason });
-  await supabase.rpc("increment_green_points", { p_user_id: userId, p_amount: amount });
+export async function awardPoints(userId: string, amount: number, reason: string, sourceKey?: string) {
+  const { error } = await supabase.rpc("apply_points", {
+    p_user_id: userId,
+    p_amount: amount,
+    p_reason: reason,
+    p_source_key: sourceKey ?? null,
+  });
+  if (error) throw new Error(`Could not update Green Points: ${error.message}`);
+}
+
+export async function reverseExchangeReward(
+  requestId: string,
+  itemType: "food" | "resource",
+  ownerId: string,
+  itemTitle: string,
+) {
+  const earnedKey = `exchange:${requestId}:earned`;
+  const { data: earned } = await supabase
+    .from("points_tx")
+    .select("amount")
+    .eq("source_key", earnedKey)
+    .maybeSingle();
+
+  if (!earned || Number(earned.amount) <= 0) return false;
+
+  const amount = Number(earned.amount);
+  const label = itemType === "food" ? "Food reward reversed" : "Item reward reversed";
+  await awardPoints(
+    ownerId,
+    -amount,
+    `${label}: ${itemTitle}`,
+    `exchange:${requestId}:reversal`,
+  );
+  return true;
 }

@@ -28,7 +28,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json({ error: "Could not join event. Please try again." }, { status: 500 });
   }
 
-  await awardPoints(user.id, 20, `Joined event: ${event.title}`);
+  await awardPoints(user.id, 20, `Event joined: ${event.title}`, `event:${event.id}:joined:${user.id}`);
   if (event.organizer_id !== user.id) {
     await notify(event.organizer_id, {
       type: "event_joined",
